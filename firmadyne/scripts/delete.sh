@@ -41,10 +41,6 @@ for i in 0 .. 4; do
     sudo tunctl -d tap${IID}_${i}
 done
 
-#Cleanup database:
-echo "Remove the database entries ..."
-psql -d firmware -U firmadyne -h 127.0.0.1 -t -q -c "DELETE from image WHERE id=${IID};"
-
 #Cleanup filesystem:
 echo "Clean up the file system ..."
 if [ -f "/tmp/qemu.${IID}*" ]; then
