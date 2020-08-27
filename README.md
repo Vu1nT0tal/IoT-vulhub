@@ -6,7 +6,7 @@
 
 在 ubuntu18.04 下安装 docker/docker-compose：
 
-```
+```sh
 # 安装 pip
 curl -s https://bootstrap.pypa.io/get-pip.py | python3
 
@@ -22,7 +22,7 @@ pip install docker-compose
 
 ## Usage
 
-```
+```sh
 # 下载项目
 wget https://github.com/firmianay/IoT-vulhub/archive/master.zip -O iot-vulhub-master.zip
 unzip iot-vulhub-master.zip
