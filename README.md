@@ -4,7 +4,7 @@
 
 ## Installation
 
-在 ubuntu18.04 下安装 docker/docker-compose：
+在 ubuntu16.04 下安装 docker/docker-compose：
 
 ```sh
 # 安装 pip
@@ -43,6 +43,8 @@ docker-compose down -v
 ```
 
 ## Contribution
+
+请查看[贡献指南](./CONTRIBUTION.md)。
 
 ## License
 

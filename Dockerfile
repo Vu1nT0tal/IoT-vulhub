@@ -1,6 +1,6 @@
 # docker 安装 firmadyne
 
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 
 WORKDIR /root
 

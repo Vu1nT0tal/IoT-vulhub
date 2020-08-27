@@ -20,63 +20,24 @@
   - [Kernel](#kernel)
     - [ARM](#arm)
     - [MIPS](#mips)
-- [Database](#database-1)
-  - [Data](#data)
-  - [Schema](#schema)
 - [Paper](#paper)
 
 # Introduction
 
-FIRMADYNE is an automated and scalable system for performing emulation and
-dynamic analysis of Linux-based embedded firmware. It includes the following
-components:
+FIRMADYNE is an automated and scalable system for performing emulation and dynamic analysis of Linux-based embedded firmware. It includes the following components:
 
-* modified kernels (MIPS: [v2.6.32](https://github.com/firmadyne/kernel-v2.6.32),
-ARM: [v4.1](https://github.com/firmadyne/kernel-v4.1),
-[v3.10](https://github.com/firmadyne/kernel-v3.10)) for instrumentation of
-firmware execution;
-* a userspace [NVRAM library](https://github.com/firmadyne/libnvram) to emulate
-a hardware NVRAM peripheral;
-* an [extractor](https://github.com/firmadyne/extractor) to extract a
-filesystem and kernel from downloaded firmware;
-* a small [console](https://github.com/firmadyne/console) application to spawn
-an additional shell for debugging;
-* and a [scraper](https://github.com/firmadyne/scraper) to download firmware from
-42+ different vendors.
+* modified kernels (MIPS: [v2.6.32](https://github.com/firmadyne/kernel-v2.6.32), ARM: [v4.1](https://github.com/firmadyne/kernel-v4.1),
+[v3.10](https://github.com/firmadyne/kernel-v3.10)) for instrumentation of firmware execution;
+* a userspace [NVRAM library](https://github.com/firmadyne/libnvram) to emulate a hardware NVRAM peripheral;
+* an [extractor](https://github.com/firmadyne/extractor) to extract a filesystem and kernel from downloaded firmware;
+* a small [console](https://github.com/firmadyne/console) application to spawn an additional shell for debugging;
+* and a [scraper](https://github.com/firmadyne/scraper) to download firmware from 42+ different vendors.
 
-We have also written the following three basic automated analyses
-using the FIRMADYNE system.
-
-* Accessible Webpages: This script iterates through each file
-within the filesystem of a firmware image that appears to be served by a
-webserver, and aggregates the results based on whether they appear to required
-authentication.
-* SNMP Information: This script dumps the contents of the
-`public` and `private` SNMP v2c communities to disk using no credentials.
-* Vulnerability Check: This script tests for the presence
-of 60 known vulnerabilities using exploits from Metasploit. In addition, it
-also checks for 14 previously-unknown vulnerbailities that we discovered.
-For more information, including affected products and CVE's, refer to
-[analyses/README.md](https://github.com/firmadyne/firmadyne/blob/master/analyses/README.md).
-
-In our 2016 [Network and Distributed System Security Symposium (NDSS)](http://www.internetsociety.org/events/ndss-symposium)
-paper, titled [Towards Automated Dynamic Analysis for Linux-based Embedded Firmware](https://github.com/firmadyne/firmadyne/blob/master/paper/paper.pdf), we evaluated the FIRMADYNE
-system over a dataset of 23,035 firmware images, of which we were able to
-extract 9,486. Using 60 exploits from the [Metasploit Framework](https://github.com/rapid7/metasploit-framework),
-and 14 previously-unknown vulnerabilities that we discovered, we showed that
-846 out of 1,971 (43%) firmware images were vulnerable to at least one exploit,
-which we estimate to affect 89+ different products. For more details, refer to
-our paper linked above.
-
-**Note**: This project is a research tool, and is currently not production ready.
-In particular, some components are quite immature and rough. We suggest
-running the system within a virtual machine. No support is offered, but pull
-requests are greatly appreciated, whether for documentation, tests, or code!
+In our 2016 NDSS paper, titled [Towards Automated Dynamic Analysis for Linux-based Embedded Firmware](https://github.com/firmadyne/firmadyne/blob/master/paper/paper.pdf), we evaluated the FIRMADYNE system over a dataset of 23,035 firmware images, of which we were able to extract 9,486. Using 60 exploits from the Metasploit Framework, and 14 previously-unknown vulnerabilities that we discovered, we showed that 846 out of 1,971 (43%) firmware images were vulnerable to at least one exploit, which we estimate to affect 89+ different products. For more details, refer to our paper linked above.
 
 # Setup
 
-The following has been tested on a Ubuntu 14.04 machine. Other Debian-based
-systems should also be compatible.
+The following has been tested on a Ubuntu 14.04 machine. Other Debian-based systems should also be compatible.
 
 First, clone this repository recursively and install its dependencies.
 
@@ -85,8 +46,7 @@ First, clone this repository recursively and install its dependencies.
 
 ## Extractor
 
-The extractor depends on the [binwalk](https://github.com/devttys0/binwalk)
-tool, so we need to install that and its dependencies.
+The extractor depends on the [binwalk](https://github.com/devttys0/binwalk) tool, so we need to install that and its dependencies.
 
 1. `git clone https://github.com/devttys0/binwalk.git`
 2. `cd binwalk`
@@ -95,18 +55,7 @@ tool, so we need to install that and its dependencies.
   * For Python 2.x, `sudo apt-get install python-lzma`
 4. `sudo -H pip install git+https://github.com/ahupp/python-magic`
 5. `sudo -H pip install git+https://github.com/sviehb/jefferson`.
-6. Optionally, instead of [upstream sasquatch](https://github.com/devttys0/sasquatch),
-our [sasquatch fork](https://github.com/firmadyne/sasquatch) can be used to
-prevent false positives by making errors fatal.
-
-## Database
-
-Next, install, set up, and configure the database.
-
-1. `sudo apt-get install postgresql`
-2. `sudo -u postgres createuser -P firmadyne`, with password `firmadyne`
-3. `sudo -u postgres createdb -O firmadyne firmware`
-4. `sudo -u postgres psql -d firmware < ./firmadyne/database/schema`
+6. Optionally, instead of [upstream sasquatch](https://github.com/devttys0/sasquatch), our [sasquatch fork](https://github.com/firmadyne/sasquatch) can be used to prevent false positives by making errors fatal.
 
 ## Binaries
 
@@ -122,13 +71,9 @@ To use [QEMU](http://wiki.qemu.org/Main_Page) provided by your distribution:
 
 * `sudo apt-get install qemu-system-arm qemu-system-mips qemu-system-x86 qemu-utils`
 
-Note that emulation of x86-based firmware is not currently supported, but installing
-`qemu-system-x86` resolves a packaging issue on certain Debian-based distributions.
+Note that emulation of x86-based firmware is not currently supported, but installing `qemu-system-x86` resolves a packaging issue on certain Debian-based distributions.
 
-Alternatively, use our [modified version](https://github.com/firmadyne/qemu-linaro)
-of [qemu-linaro](https://git.linaro.org/?p=qemu/qemu-linaro.git) for certain
-firmware with an `alphafs` webserver that assumes a fixed memory mapping (not
-recommended), or [upstream qemu](https://github.com/qemu/qemu).
+Alternatively, use our [modified version](https://github.com/firmadyne/qemu-linaro) of [qemu-linaro](https://git.linaro.org/?p=qemu/qemu-linaro.git) for certain firmware with an `alphafs` webserver that assumes a fixed memory mapping (not recommended), or [upstream qemu](https://github.com/qemu/qemu).
 
 # Usage
 
@@ -178,25 +123,17 @@ It is likely that the process requested a NVRAM entry that FIRMADYNE does not ha
 
 # Compiling from Source
 
-If you would like to compile the entire FIRMADYNE system from scratch
-without using our pre-built binaries, please follow the steps below.
+If you would like to compile the entire FIRMADYNE system from scratch without using our pre-built binaries, please follow the steps below.
 
 ## [Toolchain](https://github.com/GregorR/musl-cross)
 
-In order to build any of the binaries used by FIRMADYNE, you will need three
-cross-compilation toolchains for the following architecture triples. Use only
-[musl libc](http://www.musl-libc.org) as the C runtime library for the
-toolchain; others have not been tested.
+In order to build any of the binaries used by FIRMADYNE, you will need three cross-compilation toolchains for the following architecture triples. Use only [musl libc](http://www.musl-libc.org) as the C runtime library for the toolchain; others have not been tested.
 
 * arm-linux-musleabi
 * mipseb-linux-musl
 * mipsel-linux-musl
 
-To simplify the process of building cross-compilation toolchains with musl, we
-recommend using the [musl-cross](https://github.com/GregorR/musl-cross) project.
-Follow the below steps to build these toolchains from source, or alternatively
-click [here](https://cmu.boxcn.net/s/hnpvf1n72uccnhyfe307rc2nb9rfxmjp) to
-download our pre-built toolchains.
+To simplify the process of building cross-compilation toolchains with musl, we recommend using the [musl-cross](https://github.com/GregorR/musl-cross) project. Follow the below steps to build these toolchains from source, or alternatively click [here](https://cmu.boxcn.net/s/hnpvf1n72uccnhyfe307rc2nb9rfxmjp) to download our pre-built toolchains.
 
 1. `git clone https://github.com/GregorR/musl-cross.git`
 
@@ -277,80 +214,9 @@ download our pre-built toolchains.
     3. `make ARCH=mips CROSS_COMPILE=/opt/cross/mipsel-linux-musl/bin/mipsel-linux-musl- O=./build/mipsel -j8`
     4. `cp build/mipsel/vmlinux ../firmadyne/binaries/vmlinux.mipsel`
 
-# Database
-
-During development, the database was stored on a PostgreSQL server.
-
-## Data
-
-Although we cannot redistribute binary firmware, the data used for our
-experiments is available [here](https://cmu.boxcn.net/s/hnpvf1n72uccnhyfe307rc2nb9rfxmjp).
-
-## [Schema](https://github.com/firmadyne/firmadyne/blob/master/database/schema)
-
-Below are descriptions of tables in the schema.
-
-* `brand`: Stores brand names for each vendor.
-
-| Column | Description |
-| ------ | ----------- |
-| id     | Primary key |
-| name   | Brand name  |
-
-* `image`: Stores information about each firmware image.
-
-| Column           | Description                                  |
-| ---------------- | -------------------------------------------- |
-| id               | Primary key                                  |
-| filename         | File name                                    |
-| brand_id         | Foreign key to `brand`                       |
-| hash             | MD5                                          |
-| rootfs_extracted | Whether the primary filesystem was extracted |
-| kernel_extracted | Whether the kernel was extracted             |
-| arch             | Hardware architecture                        |
-| kernel_version   | Version of the extracted kernel              |
-
-* `object`: Stores information about each file in a filesystem.
-
-| Column           | Description            |
-| ---------------- | ---------------------- |
-| id               | Primary key            |
-| hash             | MD5                    |
-
-* `object_to_image`: Maps unique files to their firmware images.
-
-| Column           | Description                 |
-| ---------------- | --------------------------- |
-| id               | Primary key                 |
-| oid              | Foreign key to `object`     |
-| iid              | Foreign key to `image`      |
-| filename         | Full path to the file       |
-| regular_file     | Whether the file is regular |
-| permissions      | File permissions in octal   |
-| uid              | Owner's user ID             |
-| gid              | Group's group ID            |
-
-* `product`
-
-| Column       | Description                    |
-| ------------ | ------------------------------ |
-| id           | Primary key                    |
-| iid          | Foreign key to `image`         |
-| url          | Download URL                   |
-| mib_filename | Filename of the SNMP MIB       |
-| mib_hash     | MD5 of the SNP MIB             |
-| mib_url      | Download URL of the SNMP MIB   |
-| sdk_filename | Filename of the source SDK     |
-| sdk_hash     | MD5 of the source SDK          |
-| sdk_url      | Download URL of the source SDK |
-| product      | Product name                   |
-| version      | Version string                 |
-| build        | Build string                   |
-| date         | Release date                   |
-
 # Paper
 
-The results discussed in our [paper](https://github.com/firmadyne/firmadyne/blob/master/paper/paper.pdf) were produced using pre-release versions of the following:
+The results discussed in our paper were produced using pre-release versions of the following:
 
 * toolchains:
    * `BINUTILS_URL=http://ftp.gnu.org/gnu/binutils/binutils-2.25.1.tar.bz2`, `GCC_VERSION=4.9.3`, `GMP_VERSION=6.0.0a`, `MPC_VERSION=1.0.2`, `MPFR_VERSION=3.1.3`, `LIBELF_VERSION=71bf774909fd654d8167a475333fa8f37fbbcb5d`, `MUSL_DEFAULT_VERSION=1.1.10`, `MUSL_GIT_VERSION=996d148bf14b477b07fa3691bffeb930c67b2b62`, `LANG_CXX=no`
