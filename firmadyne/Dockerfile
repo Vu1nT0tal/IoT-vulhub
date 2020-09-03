@@ -4,31 +4,26 @@ FROM ubuntu:16.04
 
 WORKDIR /root
 
-RUN apt update && apt upgrade -y 
-
-RUN apt install -y wget python python-pip python-lzma busybox-static fakeroot git kpartx netcat-openbsd nmap python-psycopg2 python3-psycopg2 snmp uml-utilities util-linux vlan p7zip-full && \
-    git clone --recursive https://github.com/firmadyne/firmadyne.git
+RUN apt update && apt upgrade -y && \
+    apt install -y wget python python-pip python-lzma busybox-static fakeroot git kpartx netcat-openbsd nmap python-psycopg2 python3-psycopg2 snmp uml-utilities util-linux vlan p7zip-full && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN	apt install -y git-core wget build-essential liblzma-dev liblzo2-dev zlib1g-dev unrar-free && \
-    pip install -U pip
-
-RUN git clone https://github.com/firmadyne/sasquatch && cd sasquatch && \
-    make && make install && \
-    cd .. && rm -rf sasquatch
+    pip install -U pip && \
+    apt install -y qemu-system-arm qemu-system-mips qemu-system-x86 qemu-utils && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/ReFirmLabs/binwalk && cd binwalk && \
     ./deps.sh --yes && \
     python ./setup.py install && \
-    pip install git+https://github.com/ahupp/python-magic && \
-    pip install git+https://github.com/sviehb/jefferson && \
     cd .. && rm -rf binwalk
 
-RUN	apt install -y qemu-system-arm qemu-system-mips qemu-system-x86 qemu-utils
-
-RUN	cd ./firmadyne && ./download.sh && \
+RUN	git clone --recursive https://github.com/firmadyne/firmadyne.git && \
+    cd ./firmadyne && ./download.sh && \
     sed -i  's/#FIRMWARE_DIR=\/home\/vagrant\/firmadyne/FIRMWARE_DIR=\/root\/firmadyne/g' firmadyne.config 
 
-RUN apt install postgresql postgresql-client postgresql-contrib
+RUN apt install postgresql postgresql-client postgresql-contrib && \
+    rm -rf /var/lib/apt/lists/*
 
 USER postgres
 
