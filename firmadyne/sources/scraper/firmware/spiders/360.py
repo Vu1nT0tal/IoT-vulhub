@@ -33,7 +33,7 @@ class A360Spider(Spider):
             p_date = u"updateDate:\"(?P<date>.*?)\""
 
             import re
-            products = re.findall(p_version, js)
+            products = re.findall(p_product, js)
             descriptions = re.findall(p_description, js)
             versions = re.findall(p_version, js)
             urls = re.findall(p_url, js)
@@ -49,6 +49,7 @@ class A360Spider(Spider):
                 item = FirmwareLoader(
                             item=FirmwareImage(), response=response)
                 item.add_value("url", url)
+                item.add_value("version", version)
                 item.add_value("product", product)
                 item.add_value("description", description)
                 item.add_value("date", date)

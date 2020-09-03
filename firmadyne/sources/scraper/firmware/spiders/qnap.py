@@ -1,54 +1,62 @@
+# -*- coding: utf-8 -*-
+
 from scrapy import Spider
 from scrapy.http import Request
 
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
+import logging
+import json
 import urlparse
+
+# from scrapy.shell import inspect_response #inspect_response(response, self)
 
 
 class QNAPSpider(Spider):
     name = "qnap"
     allowed_domains = ["qnap.com"]
-    start_urls = ["http://www.qnap.com/i/useng/product_x_down"]
+    # start_urls = ("https://www.qnap.com/en/download",)
+    start_urls = ("https://www.qnap.com/api/v1/download/models?locale_set=en", )
+
+    jq_locale = "en"
+    # qfile_api = "/api/v1/download/files?model_id={}&locale_set={}"
+    # qmodel_api = "/api/v1/download/models?locale_set={}"
+    qmodel_data = {}
+    qdl_data = {}
 
     def parse(self, response):
-        yield Request(
-            url=urlparse.urljoin(
-                response.url, "/i/useng/product_x_down/ajax/get_module.php"),
-            headers={"Referer": response.url},
-            callback=self.parse_products)
+        self.qmodel_data = json.loads(response.xpath('//p/text()').extract_first())["modelList"]
+        for qmodel in self.qmodel_data:
+            modelID = qmodel['modelID']
+            file_uri = "https://qnap.com/api/v1/download/files?model_id={}&locale_set={}".format(modelID, self.jq_locale)
+            yield Request(
+                url=file_uri,
+                headers={"Referer": response.url},
+                meta=qmodel,
+                callback=self.parse_model_files)
 
-    def parse_products(self, response):
-        for product in response.xpath("//select/option"):
-            text = product.xpath(".//text()").extract()
-            value = product.xpath("./@value").extract()
+    def parse_model_files(self, response):
+        meta = response.meta
 
-            if value:
-                yield Request(
-                    # firmware = 1, utility = 4, etc
-                    url=urlparse.urljoin(
-                        response.url, "/i/useng/product_x_down/product_down.php?II=%s&cat_choose=%d" % (value[0], 1)),
-                    meta={"product": text[0]},
-                    callback=self.parse_product)
+        # Due to Python2 and unicode objects, we're using response body here.  Issues are from the 'remarks' fields.
+        try:
+            model_files = json.loads(response.body)['downloads']['firmware']
+        except KeyError:
+            logging.info("No downloadable firmware for %s", meta)
+            return
 
-    def parse_product(self, response):
-        for row in response.xpath(
-                "//div[@class='main_data_block']//table/tr[position() > 1]"):
-            text = row.xpath("./td[1]//text()").extract()
-            edition = row.xpath("./td[2]//text()").extract()
-            date = row.xpath("./td[4]//text()").extract()
-            hrefs = row.xpath("./td[5]//a/@href").extract()
+        for _, fw_info in model_files.iteritems():
+            href = fw_info['links']['global']  # options: {'global', 'europe', 'usa'}
+            if not href.startswith(u"https://") and not href.startswith(u"http://"):
+                href = urlparse.urljoin(u"https://", href)
 
-            if hrefs:
-                item = FirmwareLoader(
-                    item=FirmwareImage(), response=response, date_fmt=["%Y/%m/%d"])
-                item.add_value(
-                    "version", FirmwareLoader.find_version_period(edition))
-                item.add_value("build", FirmwareLoader.find_build(edition))
-                item.add_value("url", hrefs[0])
-                item.add_value("date", item.find_date(date))
-                item.add_value("description", text[2].strip())
-                item.add_value("product", response.meta["product"])
-                item.add_value("vendor", self.name)
-                yield item.load_item()
+            item = FirmwareLoader(
+                    item=FirmwareImage(), response=response, date_fmt="%Y-%m-%d")
+            item.add_value('product', meta['name'])
+            item.add_value('vendor', self.name)
+            item.add_value('description', fw_info['releasenote'])
+            item.add_value('date', fw_info['published_at'])
+            item.add_value('version', fw_info['version'])
+            item.add_value('url', href)
+            yield item.load_item()
