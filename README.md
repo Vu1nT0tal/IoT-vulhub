@@ -28,6 +28,10 @@ wget https://github.com/firmianay/IoT-vulhub/archive/master.zip -O iot-vulhub-ma
 unzip iot-vulhub-master.zip
 cd iot-vulhub-master
 
+# （可选）构建 binwalk 容器，方便使用
+cd baseImage/binwalk
+docker build -t binwalk .
+
 # 进入某一个漏洞/环境的目录
 cd TP-Link/CVE-2017-13772
 
