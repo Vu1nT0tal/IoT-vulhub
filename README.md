@@ -30,10 +30,14 @@ cd iot-vulhub-master
 
 # （可选）构建 binwalk 容器，方便使用
 cd baseImage/binwalk
-docker build -t binwalk .
+docker build -t firmianay/binwalk . # 本地编译
+docker pull firmianay/binwalk       # 或者拉取
 
 # 进入某一个漏洞/环境的目录
-cd TP-Link/CVE-2017-13772
+cd Vivotek/remote_stack_overflow
+
+# 解包固件
+docker run -v $PWD/firmware:/root/firmware firmianay/binwalk -Mer /root/firmware/firmware.bin
 
 # 自动化编译环境
 docker-compose build
