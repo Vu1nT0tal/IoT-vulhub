@@ -2,7 +2,7 @@
 
 ## Vivotek
 
-- [CC8160 摄像头远程栈溢出](./Vivotek/remote_stack_overflow)
+- [CC8160 摄像头远程栈溢出](https://github.com/firmianay/IoT-vulhub/tree/master/VIVOTEK/remote_stack_overflow)
 
 ## TP-Link
 
