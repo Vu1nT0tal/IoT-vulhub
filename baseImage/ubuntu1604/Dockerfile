@@ -9,3 +9,5 @@ RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted
     rm -rf /var/lib/apt/lists/* && \
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U && \
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+ENV PIP_NO_CACHE_DIR=1

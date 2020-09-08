@@ -50,6 +50,10 @@ docker-compose up -d
 docker-compose down -v
 ```
 
+## 漏洞环境列表
+
+请查看[漏洞环境列表](./vuln_list.md)。
+
 ## Contribution
 
 请查看[贡献指南](./CONTRIBUTION.md)。
