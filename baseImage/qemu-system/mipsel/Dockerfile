@@ -4,10 +4,11 @@ LABEL Author="firmianay@gmail.com"
 WORKDIR /root
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends qemu-system-arm bridge-utils uml-utilities net-tools expect gdb-multiarch git python3 openssh-server \
+    && apt-get install -y --no-install-recommends qemu-system-arm bridge-utils uml-utilities net-tools expect gdb-multiarch git python3-dev openssh-server netcat libssl-dev libffi-dev build-essential \
     && sed -i "s/PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config && echo "root:root" | chpasswd \
     && git clone --depth=1 https://github.com/hugsy/gef.git \
     && cp gef/gef.py ~/.gef.py && echo "source ~/.gef.py" > ~/.gdbinit && echo "export LC_CTYPE=C.UTF-8" >> ~/.bashrc \
+    && python3 -m pip install --upgrade pwntools \
     && apt-get purge -y --autoremove git \
     && rm -rf /var/lib/apt/lists/* /root/gef
 
