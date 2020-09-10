@@ -10,6 +10,7 @@ RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted
     apt-get install -y --no-install-recommends python3 python3-pip python3-setuptools && \
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U && pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U && \
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
+    apt-get install -y --no-install-recommends iputils-ping vim-tiny \
     rm -rf /var/lib/apt/lists/*
 
 ENV PIP_NO_CACHE_DIR=1

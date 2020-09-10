@@ -33,7 +33,7 @@ expect "root@debian-armel:~# "
 send "mount -o bind /dev ./squashfs-root/dev && mount -t proc /proc ./squashfs-root/proc\r"
 
 expect "root@debian-armel:~# "
-send "scp root@192.168.2.1:/root/gdbserver /root/squashfs-root/gdbserver\r"
+send "scp -r root@192.168.2.1:/root/tools /root/squashfs-root/tools\r"
 expect {
     "(yes/no)? " { send "yes\r"; exp_continue }
     "password: " { send "root\r" }
@@ -47,4 +47,4 @@ send "/usr/sbin/httpd\r"
 expect eof
 EOF
 
-#send "./gdbserver --attach :1234 `ps | grep -v grep | grep httpd | awk '{print $1}'`"
+#send "./tools/gdbserver --attach :1234 `ps | grep -v grep | grep httpd | awk '{print $1}'`"

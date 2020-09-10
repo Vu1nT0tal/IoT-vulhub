@@ -35,7 +35,7 @@ $ docker run --privileged -p 1234:80 -it vivotek:remote_stack_overflow-user
 
 ### 系统级模拟 - 动态调试
 
-手动构建，解包过程同上。如果想要动态调试，还需要编译对应的 arm gdbserver 并复制到 system-emu 目录。
+手动构建，解包过程同上。如果想要动态调试，还需要编译对应的 arm gdbserver 并复制到 system-emu/tools 目录。
 
 ```sh
 # 先构建漏洞环境 qemu-system:arm 环境
