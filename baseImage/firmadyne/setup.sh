@@ -7,7 +7,7 @@ sudo apt install -y python-pip python3-pip unzip busybox-static git dmsetup nmap
 echo "Installing binwalk"
 git clone --depth=1 https://github.com/ReFirmLabs/binwalk
 cd binwalk
-sudo ./deps.sh
+sudo ./deps.sh --yes
 sudo python3 ./setup.py install
 sudo -H pip3 install git+https://github.com/ahupp/python-magic
 sudo -H pip install git+https://github.com/sviehb/jefferson
@@ -16,7 +16,7 @@ cd ..
 echo "Installing firmadyne"
 firmadyne_dir=$(realpath .)
 
-# Set FIRMWARE_DIR in firmadyne.config
+# 在配置文件 FIRMWARE_DIR 里设置 FIRMWARE_DIR
 sed -i "/FIRMWARE_DIR=/c\FIRMWARE_DIR=$firmadyne_dir" firmadyne.config
 cd ..
 

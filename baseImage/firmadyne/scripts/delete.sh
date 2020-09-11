@@ -16,7 +16,7 @@ if check_number $1; then
 fi
 IID=${1}
 
-#Check that no qemu is running:
+# 检查是否有 QEMU 在运行
 echo "checking the process table for a running qemu instance ..."
 PID=`ps -ef | grep qemu | grep "${IID}" | grep -v grep | awk '{print $2}'`
 if ! [ -z $PID ]; then
@@ -30,18 +30,18 @@ if ! [ -z $PID1 ]; then
     sudo kill ${PID1}
 fi
 
-#Check that nothing is mounted:
+# 检查文件系统是否已挂载
 echo "In case the filesystem is mounted, umount it now ..."
 sudo ./scripts/umount.sh ${IID}
 
-#Check network config
+# 检查网络配置
 echo "In case the network is configured, reconfigure it now ..."
 for i in 0 .. 4; do
     sudo ifconfig tap${IID}_${i} down
     sudo tunctl -d tap${IID}_${i}
 done
 
-#Cleanup filesystem:
+# 清理文件系统
 echo "Clean up the file system ..."
 if [ -f "/tmp/qemu.${IID}*" ]; then
     sudo rm /tmp/qemu.${IID}*

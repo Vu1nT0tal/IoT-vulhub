@@ -39,8 +39,8 @@ $ docker run --privileged -p 1234:80 -it vivotek:remote_stack_overflow-user
 
 ```sh
 # 先构建漏洞环境 qemu-system:arm 环境
-$ cd baseImage/qemu-system/arm
-$ docker build -t qemu-system:arm .
+$ cd baseImage/qemu-system/armel
+$ docker build -t qemu-system:armel .
 
 # 再构建漏洞环境
 $ docker-compose -f docker-compose-system.yml build

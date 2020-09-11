@@ -18,6 +18,9 @@ send "root\r"
 expect "root@debian-armel:~# "
 send "ifconfig eth0 192.168.2.2/24\r"
 
+#expect "root@debian-armel:~# "
+#send "echo 0 > /proc/sys/kernel/randomize_va_space\r"
+
 expect "root@debian-armel:~# "
 send "scp root@192.168.2.1:/root/squashfs-root.tar.gz /root/squashfs-root.tar.gz\r"
 expect {

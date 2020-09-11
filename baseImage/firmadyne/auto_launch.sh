@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# check argument
+# 检查参数
 if [ "$#" -ge 1 ]; then
     if [ "$2" == "-v" ]; then
         VERB=true
@@ -13,7 +13,7 @@ else
     exit 1
 fi
 
-# check file existence
+# 检查固件文件是否存在
 if [ ! -f ${1} ]; then
     echo "Input file not found: ${1}"
     exit 1
@@ -29,7 +29,7 @@ if ! [[ ${ID} =~ ${re} ]] ; then
 fi
 ID=$((ID + 1))
 
-# launch the extractor
+# 固件解包
 echo 'Extracting the firmware...'
 if ${VERB} ; then
     ./sources/extractor/extractor.py -np -nk "${1}" images
@@ -41,16 +41,17 @@ fi
 FILE=$(ls images | grep -F "${FNAME}") && mv images/"${FILE}" images/${ID}.tar.gz
 
 # check file existence
+# 检查 fs 文件是否存在
 if [ ! -f ./images/${ID}.tar.gz ]; then
     echo "File ./images/${ID}.tar.gz not found, probably an extraction problem happened"
     exit 1
 fi
 
-# get the architecture
+# 获取体系结构
 echo 'Getting the architecture...'
 ARCH=$(./scripts/getArch.sh ./images/${ID}.tar.gz | cut -d ' ' -f2)
 
-# create the image and get network info
+# 创建镜像并获取网络信息
 echo 'Creating the image...'
 if ${VERB} ; then
     sudo ./scripts/makeImage.sh ${ID} ${ARCH}
@@ -60,10 +61,10 @@ else
     sudo ./scripts/inferNetwork.sh ${ID} ${ARCH} > /dev/null 2>&1
 fi
 
-# run the emulation
+# 启动模拟
 sudo ./scratch/${ID}/run.sh
 
-# cleanup
+# 清理中间文件
 echo 'Cleaning up...'
 rm images/${ID}.tar.gz
 sudo rm -rf scratch/${ID}

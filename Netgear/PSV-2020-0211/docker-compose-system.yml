@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+    system-emu:
+        container_name: netgear-system
+        build:
+            context: .
+            dockerfile: ./system-emu/Dockerfile
+        privileged: true

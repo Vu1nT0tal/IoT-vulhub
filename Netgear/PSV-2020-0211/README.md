@@ -3,6 +3,12 @@
 
 ## 漏洞环境
 
+需要先构建 buildroot 环境，交叉编译得到 `nvram.so`：
+
+```
+$ arm-buildroot-linux-uclibcgnueabi-gcc -Wall -fPIC -shared nvram.c -o nvram.so
+```
+
 ## 漏洞复现
 
 ## 参考链接

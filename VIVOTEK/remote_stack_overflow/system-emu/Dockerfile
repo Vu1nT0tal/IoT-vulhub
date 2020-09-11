@@ -1,4 +1,4 @@
-FROM firmianay/qemu-system:arm
+FROM firmianay/qemu-system:armel
 LABEL Author="firmianay@gmail.com"
 
 WORKDIR /root
