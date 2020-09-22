@@ -7,7 +7,7 @@ from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
 import json
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 class TendaZHSpider(Spider):
     name = "tenda_zh"
@@ -21,9 +21,9 @@ class TendaZHSpider(Spider):
             url = a.xpath("./@href").extract()[0]
             text = a.xpath("./text()").extract()[0]
 
-            items = text.split(u'升级软件')
+            items = text.split('升级软件')
             version = items[-1].strip()
-            product = items[0].strip().split(u'（')[0].split(' ')[0]
+            product = items[0].strip().split('（')[0].split(' ')[0]
 
             yield Request(
                 url=self.base_url.format(url),

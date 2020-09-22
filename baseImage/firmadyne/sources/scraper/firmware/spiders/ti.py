@@ -4,7 +4,7 @@ from scrapy.http import Request
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class TISpider(Spider):
@@ -16,7 +16,7 @@ class TISpider(Spider):
         for product in response.xpath(
                 "//select[@id='placeholdersitebody_0_ctl02_ctl00_ddlClassification']/option[position() > 1]"):
             yield Request(
-                url=urlparse.urljoin(response.url + "/",
+                url=urllib.parse.urljoin(response.url + "/",
                                      product.xpath("./@value").extract()[0]),
                 meta={"product": product.xpath("./text()").extract()[0]},
                 callback=self.parse_product)
@@ -27,7 +27,7 @@ class TISpider(Spider):
             if link.xpath("./th[1]/a/text()").extract() and "Operating System" in link.xpath(
                     "./th[1]/a/text()").extract()[0]:
                 yield Request(
-                    url=urlparse.urljoin(response.url, link.xpath(
+                    url=urllib.parse.urljoin(response.url, link.xpath(
                         "./th[1]/a/@href").extract()[0]),
                     meta={"product": response.meta["product"]},
                     callback=self.parse_link)

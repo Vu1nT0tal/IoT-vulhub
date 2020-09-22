@@ -4,7 +4,7 @@ from scrapy.http import FormRequest
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class NetgearSpider(Spider):
@@ -60,7 +60,7 @@ class NetgearSpider(Spider):
                         yield item.load_item()
 
                     elif "mib" in " ".join(text).lower():
-                        mib = urlparse.urljoin(response.url, href[0].strip())
+                        mib = urllib.urljoin(response.url, href[0].strip())
 
             elif "" not in response.xpath("//select[@name='ctl00$ctl00$ctl00$mainContent$localizedContent$bodyCenter$adsPanel$lbProduct']/option/@value").extract():
                 for entry in response.xpath(

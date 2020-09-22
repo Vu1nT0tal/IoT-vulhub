@@ -3,7 +3,7 @@ from scrapy.http import Request
 
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class AsusSpider(Spider):
@@ -18,7 +18,7 @@ class AsusSpider(Spider):
         if "cid" not in response.meta:
             for category in response.xpath("//div[@class='product-category']//a/@l1_id").extract():
                 yield Request(
-                    url=urlparse.urljoin(response.url, "/support/utilities/GetProducts.aspx?ln=%s&p=%s" % (self.region, category)),
+                    url=urllib.parse.urljoin(response.url, "/support/utilities/GetProducts.aspx?ln=%s&p=%s" % (self.region, category)),
                     meta={"cid": category},
                     headers={"Referer": response.url,
                              "X-Requested-With": "XMLHttpRequest"},
@@ -27,7 +27,7 @@ class AsusSpider(Spider):
         elif "sid" not in response.meta:
             for series in response.xpath("//table/id/text()").extract():
                 yield Request(
-                    url=urlparse.urljoin(response.url, "/support/utilities/GetProducts.aspx?ln=%s&p=%s&s=%s" % (self.region, response.meta["cid"], series)),
+                    url=urllib.parse.urljoin(response.url, "/support/utilities/GetProducts.aspx?ln=%s&p=%s&s=%s" % (self.region, response.meta["cid"], series)),
                     meta={"cid": response.meta["cid"], "sid": series},
                     headers={"Referer": response.url,
                              "X-Requested-With": "XMLHttpRequest"},
@@ -41,7 +41,7 @@ class AsusSpider(Spider):
 
                 # choose "Others" = 8
                 yield Request(
-                    url=urlparse.urljoin(response.url, "/support/Download/%s/%s/%s/%s/%d" % (response.meta["cid"], response.meta["sid"], pid, mid, 8)),
+                    url=urllib.parse.urljoin(response.url, "/support/Download/%s/%s/%s/%s/%d" % (response.meta["cid"], response.meta["sid"], pid, mid, 8)),
                     meta={"product": product},
                     headers={"Referer": response.url,
                              "X-Requested-With": "XMLHttpRequest"},

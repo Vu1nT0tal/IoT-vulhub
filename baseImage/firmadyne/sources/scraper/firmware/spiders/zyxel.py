@@ -5,7 +5,7 @@ from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
 import json
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 class ZyXELSpider(Spider):
     name = "zyxel"
@@ -19,7 +19,7 @@ class ZyXELSpider(Spider):
             "//div[@id='searchDropUlWrap']/script//text()").extract()[0].split('=')[2].strip()[0: -1])
         for entry in script:
             yield Request(
-                url=urlparse.urljoin(
+                url=urllib.parse.urljoin(
                     response.url, "/us/en/support/SearchResultTab.shtml?c=us&l=en&t=dl&md=%s&mt=Firmware&mt=MIBFile" % script[entry][1]),
                 headers={"Referer": response.url},
                 meta={"product": script[entry][1]},

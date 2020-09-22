@@ -5,7 +5,7 @@ from scrapy.http import Request
 
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 class PhicommSpider(Spider):
     name = "phicomm"
@@ -23,7 +23,7 @@ class PhicommSpider(Spider):
                 continue
 
             description = tr.xpath("./td[2]/text()").extract()[0]
-            product = description.split(u'（')[0]
+            product = description.split('（')[0]
             version = tr.xpath("./td[4]/text()").extract()[0]
             #2017-03-14
             date = tr.xpath("./td[6]/p/text()").extract()[0]
@@ -45,8 +45,8 @@ class PhicommSpider(Spider):
     def parse_product(self, response):
         import re
         #/cn/Uploads/files/20161024/K1_V22.4.2.15.bin
-        print response.text
-        path = re.findall(u"(/cn/Uploads/files/.*?\.bin)", response.text)[0]
+        print(response.text)
+        path = re.findall("(/cn/Uploads/files/.*?\.bin)", response.text)[0]
         url = "http://www.phicomm.com/{}".format(path)
 
         item = FirmwareLoader(

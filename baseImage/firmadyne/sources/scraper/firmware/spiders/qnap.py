@@ -8,7 +8,7 @@ from firmware.loader import FirmwareLoader
 
 import logging
 import json
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 # from scrapy.shell import inspect_response #inspect_response(response, self)
 
@@ -46,10 +46,10 @@ class QNAPSpider(Spider):
             logging.info("No downloadable firmware for %s", meta)
             return
 
-        for _, fw_info in model_files.iteritems():
+        for _, fw_info in list(model_files.items()):
             href = fw_info['links']['global']  # options: {'global', 'europe', 'usa'}
-            if not href.startswith(u"https://") and not href.startswith(u"http://"):
-                href = urlparse.urljoin(u"https://", href)
+            if not href.startswith("https://") and not href.startswith("http://"):
+                href = urllib.urljoin("https://", href)
 
             item = FirmwareLoader(
                     item=FirmwareImage(), response=response, date_fmt="%Y-%m-%d")

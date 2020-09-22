@@ -4,7 +4,7 @@ from scrapy.http import Request, FormRequest, HtmlResponse
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class BelkinSpider(Spider):
@@ -31,7 +31,7 @@ class BelkinSpider(Spider):
         else:
             for product in response.xpath("//form[@id='productSearchForm']/div[3]//ul[@class='select-options']//a/@data-id").extract():
                 yield Request(
-                    url=urlparse.urljoin(
+                    url=urllib.parse.urljoin(
                         response.url, "/us/support-product?pid=%s" % (product)),
                     headers={"Referer": response.url},
                     callback=self.parse_product)
@@ -40,7 +40,7 @@ class BelkinSpider(Spider):
         for item in response.xpath("//div[@id='main-content']//a"):
             if "firmware" in item.xpath(".//text()").extract()[0].lower():
                 yield Request(
-                    url=urlparse.urljoin(
+                    url=urllib.parse.urljoin(
                         response.url, item.xpath(".//@href").extract()[0]),
                     headers={"Referer": response.url},
                     meta={"product": response.xpath("//p[@class='product-part-number']/text()").extract()[0].split(' ')[-1]},
@@ -61,7 +61,7 @@ class BelkinSpider(Spider):
         for text in response.body.split('\''):
             if "articles/" in text.lower() and "download/" in text.lower():
                 yield Request(
-                    url=urlparse.urljoin(response.url, text),
+                    url=urllib.parse.urljoin(response.url, text),
                     headers={"Referer": response.url},
                     meta={"product": response.meta["product"]},
                     callback=self.parse_kb)

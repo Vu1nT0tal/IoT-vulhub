@@ -7,7 +7,7 @@ from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
 import logging
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 #from scrapy.shell import inspect_response #inspect_response(response, self)
 
@@ -20,11 +20,11 @@ class SchneiderElectricSpider(Spider):
     def parse(self, response):
         a_to_z = response.css('ul.product-finder-result')
         for link in a_to_z.xpath('.//a'):
-            product = u' '.join(link.xpath('.//text()').extract()).strip()
+            product = ' '.join(link.xpath('.//text()').extract()).strip()
             href = link.xpath('@href').extract_first()
 
             yield Request(
-                url=urlparse.urljoin(response.url, href),
+                url=urllib.parse.urljoin(response.url, href),
                 headers={"Referer": response.url},
                 meta={'product': product},
                 callback=self.parse_product)
@@ -37,10 +37,10 @@ class SchneiderElectricSpider(Spider):
             href = link.xpath('@href').extract_first()
             if href.endswith(u'software-firmware-tab'):
                 logging.debug("Requesting SW+FW page for %s at %s",
-                        response.meta['product'], urlparse.urljoin(response.url, href))
+                        response.meta['product'], urllib.urljoin(response.url, href))
 
                 yield Request(
-                    url=urlparse.urljoin(response.url, href),
+                    url=urllib.parse.urljoin(response.url, href),
                     headers={"Referer": response.url},
                     meta=meta,
                     callback=self.parse_product_sw_fw)
@@ -63,7 +63,7 @@ class SchneiderElectricSpider(Spider):
                 if len(col_text) > 1:
                     col_selector_map[col_text] = section
         try:
-            fw_sect = col_selector_map[u'Firmware']
+            fw_sect = col_selector_map['Firmware']
         except KeyError:
             logging.debug("Did not find a 'Firmware' section in the downloads for %s", product)
             return
@@ -98,13 +98,13 @@ class SchneiderElectricSpider(Spider):
         #  Throw away '.pdf', '.pdf.7z', '.pdf.zip' files
         fw_name_col = fw_row.css('div.docs-table__column-name')
         fw_href = fw_name_col.xpath('.//a/@href').extract_first()
-        if any(fw_href.find(x) != -1 for x in (u'.pdf', )):
+        if any(fw_href.find(x) != -1 for x in ('.pdf', )):
             logging.debug("Ignoring firmware link because it contained '.pdf': %s", fw_href)
             return (None, None, None, None)
 
         # Firmware version
         try:
-            fw_version = fw_name_col.xpath('.//a/text()').re(ur'.*\s+\(Version\s+(.+)\)')[0]
+            fw_version = fw_name_col.xpath('.//a/text()').re(r'.*\s+\(Version\s+(.+)\)')[0]
         except IndexError:
             fw_version = None
             # logging.debug("Failed to extract version from '%s'",
@@ -120,12 +120,12 @@ class SchneiderElectricSpider(Spider):
         #except IndexError:
         #    logging.debug("Did not fid date in %s", date_select.extract())
         #    fw_date_orig = ''
-        fw_date_orig = u' '.join(date_select.extract()).rstrip().split(u' ')[-1]
-        fw_date_list = fw_date_orig.split(u'/')
+        fw_date_orig = ' '.join(date_select.extract()).rstrip().split(' ')[-1]
+        fw_date_list = fw_date_orig.split('/')
         for k, v in enumerate(fw_date_list):
             if len(v) < 2:
-                fw_date_list[k] = u"0"+v
-        fw_date = u'/'.join(fw_date_list)
+                fw_date_list[k] = "0"+v
+        fw_date = '/'.join(fw_date_list)
         # logging.debug("Extracted Date: %s Converted Date: %s for %s",
         #        fw_date_orig, fw_date, response.url)
 

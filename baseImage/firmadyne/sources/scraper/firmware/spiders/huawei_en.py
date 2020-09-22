@@ -6,7 +6,7 @@ from firmware.loader import FirmwareLoader
 
 import datetime
 import json
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class HuaweiENSpider(Spider):
@@ -18,7 +18,7 @@ class HuaweiENSpider(Spider):
 
     def parse(self, response):
         yield Request(
-            url=urlparse.urljoin(
+            url=urllib.parse.urljoin(
                 response.url, "/support/services/service/product/category?siteCode=%s" % (self.region)),
             headers={"Referer": response.url,
                      "X-Requested-With": "XMLHttpRequest"},
@@ -29,7 +29,7 @@ class HuaweiENSpider(Spider):
 
         for category in json_response:
             yield Request(
-                url=urlparse.urljoin(
+                url=urllib.parse.urljoin(
                     response.url, "/support/services/service/product/list?productID=%s&siteCode=%s" % (category["productId"], self.region)),
                 headers={"Referer": response.url,
                          "X-Requested-With": "XMLHttpRequest"},
@@ -40,7 +40,7 @@ class HuaweiENSpider(Spider):
 
         for product in json_response:
             yield Request(
-                url=urlparse.urljoin(
+                url=urllib.parse.urljoin(
                     response.url, "/support/services/service/file/list?productID=%s&siteCode=%s" % (product["productId"], self.region)),
                 meta={"product": product["productCode"]},
                 headers={"Referer": response.url,

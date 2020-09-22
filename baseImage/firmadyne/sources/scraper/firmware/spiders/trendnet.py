@@ -4,7 +4,7 @@ from scrapy.http import Request
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 class TrendnetSpider(Spider):
     name = "trendnet"
@@ -18,7 +18,7 @@ class TrendnetSpider(Spider):
                 href = entry.xpath("./@value").extract()[0]
 
                 yield Request(
-                    url=urlparse.urljoin(response.url, href),
+                    url=urllib.parse.urljoin(response.url, href),
                     meta={"product": text},
                     headers={"Referer": response.url},
                     callback=self.parse_product)
@@ -30,7 +30,7 @@ class TrendnetSpider(Spider):
 
             if "downloads" in text.lower():
                 yield Request(
-                    url=urlparse.urljoin(response.url, href),
+                    url=urllib.parse.urljoin(response.url, href),
                     meta={"product": response.meta["product"]},
                     headers={"Referer": response.url},
                     callback=self.parse_download)

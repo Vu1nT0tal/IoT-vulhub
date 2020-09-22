@@ -4,7 +4,7 @@ from scrapy.http import Request
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 class UbloxSpider(Spider):
     name = "ublox"

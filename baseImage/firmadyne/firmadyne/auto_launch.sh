@@ -32,9 +32,9 @@ ID=$((ID + 1))
 # 固件解包
 echo 'Extracting the firmware...'
 if ${VERB} ; then
-    ./sources/extractor/extractor.py -np -nk "${1}" images
+    ./extractor/extractor.py -np -nk "${1}" images
 else
-    ./sources/extractor/extractor.py -np -nk "${1}" images > /dev/null 2>&1
+    ./extractor/extractor.py -np -nk "${1}" images > /dev/null 2>&1
 fi
 
 # choose an appropriate ID for the extracted fs

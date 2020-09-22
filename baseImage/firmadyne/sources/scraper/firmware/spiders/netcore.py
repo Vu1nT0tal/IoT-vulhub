@@ -6,7 +6,7 @@ from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
 import re
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class NetcoreSpider(Spider):
@@ -29,7 +29,7 @@ class NetcoreSpider(Spider):
             downloadid = re.search('downloadsId=(\d+)\.html', href).group(1)
             url = self.product_url.format(downloadid)
 
-            if not title.count(u"升级固件"):
+            if not title.count("升级固件"):
                 continue
             product = re.search('[a-zA-Z0-9\+\-]+',title).group(0)
 

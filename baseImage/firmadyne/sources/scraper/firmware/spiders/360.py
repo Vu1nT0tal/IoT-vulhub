@@ -23,14 +23,14 @@ class A360Spider(Spider):
     def parse_product(self, response):
         js = response.text
         if js.startswith("var commonInfo"):
-            print response.url
-            print js
+            print((response.url))
+            print(js)
 
-            p_product = u"id:\"(?P<product>.*?)\""
-            p_description = u"title:\"(?P<description>.*?)\""
-            p_version = u"romVersions:\"(?P<version>.*?)\""
-            p_url = u"romUrl:\"(?P<url>.*?)\""
-            p_date = u"updateDate:\"(?P<date>.*?)\""
+            p_product = "id:\"(?P<product>.*?)\""
+            p_description = "title:\"(?P<description>.*?)\""
+            p_version = "romVersions:\"(?P<version>.*?)\""
+            p_url = "romUrl:\"(?P<url>.*?)\""
+            p_date = "updateDate:\"(?P<date>.*?)\""
 
             import re
             products = re.findall(p_product, js)
@@ -39,7 +39,7 @@ class A360Spider(Spider):
             urls = re.findall(p_url, js)
             dates = re.findall(p_date, js)
 
-            for i in xrange(len(products)):
+            for i in range(len(products)):
                 product = products[i]
                 url = urls[i]
                 version = versions[i]

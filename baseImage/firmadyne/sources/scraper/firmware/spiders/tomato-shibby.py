@@ -5,7 +5,7 @@ from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
 import os
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 class TomatoShibbySpider(Spider):
     name = "tomato-shibby"
@@ -32,7 +32,7 @@ class TomatoShibbySpider(Spider):
                     build = text.replace("build", "")
 
                 yield Request(
-                    url=urlparse.urljoin(response.url, href),
+                    url=urllib.parse.urljoin(response.url, href),
                     headers={"Referer": response.url},
                     meta={"build": build, "product": product},
                     callback=self.parse)

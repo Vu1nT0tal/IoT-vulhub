@@ -4,7 +4,7 @@ from scrapy.http import Request
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class PolycomSpider(Spider):
@@ -45,7 +45,7 @@ class PolycomSpider(Spider):
                 href = entry.xpath("./a/@href").extract()[0].strip()
                 date = entry.xpath("./span//text()").extract()
 
-                path = urlparse.urlparse(href).path
+                path = urllib.urlparse(href).path
 
                 if any(x in text.lower() for x in ["end user license agreement", "eula", "release notes",
                                                    "mac os", "windows", "guide", "(pdf)", "sample"]) or href.endswith(".pdf"):
@@ -53,7 +53,7 @@ class PolycomSpider(Spider):
 
                 elif any(path.endswith(x) for x in [".htm", ".html"]) or "(html)" in text.lower():
                     yield Request(
-                        url=urlparse.urljoin(
+                        url=urllib.parse.urljoin(
                             response.url, PolycomSpider.fix_url(href)),
                         meta={"product": response.meta["product"] if "product" in response.meta else text,
                               "date": date, "version": FirmwareLoader.find_version_period([text]), "description": text},

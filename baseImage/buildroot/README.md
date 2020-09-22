@@ -27,3 +27,5 @@ $ wget https://toolchains.bootlin.com/downloads/releases/toolchains/mips32/tarba
 # mips32el uclibc
 $ wget https://toolchains.bootlin.com/downloads/releases/toolchains/mips32el/tarballs/mips32el--uclibc--stable-2020.02-2.tar.bz2
 ```
+
+或者：https://www.uclibc.org/downloads/binaries/0.9.30.1/

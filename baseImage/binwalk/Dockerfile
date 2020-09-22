@@ -9,7 +9,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git wget unzip python \
     # && wget -q --tries=0 https://github.com/ReFirmLabs/binwalk/archive/master.zip \
     # && git clone --depth=1 https://github.com/ReFirmLabs/binwalk.git \
-    && unzip -q master.zip && cd binwalk-master && ./deps.sh --yes && python ./setup.py install \
+    && unzip -q master.zip && cd binwalk-master \
+    # https://github.com/devttys0/sasquatch/pull/35
+    && sed -i 's/devttys0\/sasquatch/firmianay\/sasquatch -b patch-1/g' deps.sh \
+    && ./deps.sh --yes && python ./setup.py install \
     && cd .. && rm -rf binwalk-master master.zip \
     && apt-get purge -y --autoremove git wget \
     && rm -rf /var/lib/apt/lists/*

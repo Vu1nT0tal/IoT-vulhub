@@ -5,7 +5,7 @@ from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
 import os
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class PfSenseSpider(Spider):
@@ -22,7 +22,7 @@ class PfSenseSpider(Spider):
                 continue
             elif href.endswith('/'):
                 yield Request(
-                    url=urlparse.urljoin(response.url, href),
+                    url=urllib.parse.urljoin(response.url, href),
                     headers={"Referer": response.url},
                     callback=self.parse)
             elif href.endswith(".gz") and ".iso" not in href:

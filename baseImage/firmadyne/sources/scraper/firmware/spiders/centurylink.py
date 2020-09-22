@@ -4,7 +4,7 @@ from scrapy.http import Request
 from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 # http://home.centurytel.net/ihd/
 
@@ -24,7 +24,7 @@ class CenturyLinkSpider(Spider):
                 for link in section.xpath(".//a/@href").extract():
                     if link.endswith(".html"):
                         yield Request(
-                            url=urlparse.urljoin(response.url, link),
+                            url=urllib.parse.urljoin(response.url, link),
                             meta={"product": product,
                                   "version": FirmwareLoader.find_version(text)},
                             headers={"Referer": response.url},

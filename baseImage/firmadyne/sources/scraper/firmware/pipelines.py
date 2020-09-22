@@ -5,8 +5,8 @@ from scrapy.pipelines.files import FilesPipeline
 import os
 import hashlib
 import logging
-import urlparse
-import urllib
+import urllib.parse
+import urllib.request, urllib.parse, urllib.error
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class FirmwarePipeline(FilesPipeline):
     # overrides function from FilesPipeline
     def file_path(self, request, response=None, info=None):
         extension = os.path.splitext(os.path.basename(
-            urlparse.urlsplit(request.url).path))[1]
+            urllib.parse.urlsplit(request.url).path))[1]
         return "%s/%s%s" % (request.meta["vendor"],
                             hashlib.sha1(request.url).hexdigest(), extension)
 
@@ -43,22 +43,22 @@ class FirmwarePipeline(FilesPipeline):
         for x in ["vendor", "url"]:
             if x not in item:
                 raise DropItem(
-                    "Missing required field '%s' for item: " % (x, item))
+                    "Missing required field '%s' for item: " % x)
 
         # resolve dynamic redirects in urls
         for x in ["mib", "sdk", "url"]:
             if x in item:
-                split = urlparse.urlsplit(item[x])
+                split = urllib.parse.urlsplit(item[x])
                 # remove username/password if only one provided
                 if split.username or split.password and not (split.username and split.password):
-                    item[x] = urlparse.urlunsplit(
+                    item[x] = urllib.parse.urlunsplit(
                         (split[0], split[1][split[1].find("@") + 1:], split[2], split[3], split[4]))
 
                 if split.scheme == "http":
-                    item[x] = urllib.urlopen(item[x]).geturl()
+                    item[x] = urllib.request.urlopen(item[x]).geturl()
 
         # check for filtered url types in path
-        url = urlparse.urlparse(item["url"])
+        url = urllib.parse.urlparse(item["url"])
         if any(url.path.endswith(x) for x in [".pdf", ".php", ".txt", ".doc", ".rtf", ".docx", ".htm", ".html", ".md5", ".sha1", ".torrent"]):
             raise DropItem("Filtered path extension: %s" % url.path)
         elif any(x in url.path for x in ["driver", "utility", "install", "wizard", "gpl", "login"]):
@@ -86,7 +86,7 @@ class FirmwarePipeline(FilesPipeline):
                 for ok, x in results:
                     for y in ["mib", "url", "sdk"]:
                         # verify URL's are the same after unquoting
-                        if ok and y in item and urllib.unquote(item[y]) == urllib.unquote(x["url"]):
+                        if ok and y in item and urllib.parse.unquote(item[y]) == urllib.parse.unquote(x["url"]):
                             status[y] = x
                         elif y not in status:
                             status[y] = {"checksum": None, "path": None}

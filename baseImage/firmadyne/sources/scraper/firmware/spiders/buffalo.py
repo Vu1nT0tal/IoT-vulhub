@@ -9,13 +9,11 @@ import json
 class BuffaloSpider(Spider):
     name = "buffalo"
     allowed_domains = ["buffalotech.com", "cdn.cloudfiles.mosso.com"]
-    start_urls = ["http://www.buffalotech.com/products/category/wireless-networking"]
+    start_urls = ["https://www.buffalotech.com/products/category/wireless-networking"]
 
     def parse(self, response):
-        for href in response.xpath("//article/div/a/@href").extract():
-            yield Request(
-                url=href,
-                headers={"Referer": response.url},
+            yield from response.follow_all(
+                xpath='//article/div/a',
                 callback=self.parse_product)
 
 
@@ -24,7 +22,7 @@ class BuffaloSpider(Spider):
         #<h3 class="firm">Firmware</h3>
         if response.xpath('//h3[@class="firm"]').extract():
             for tr in response.xpath('//*[@id="tab-downloads"]/table[1]/tbody/tr'):
-                print tr.extract()
+                print(tr.extract())
                 url = tr.xpath("./td[2]/a/@href").extract()[0]
                 date = tr.xpath("./td[4]/text()").extract()[0]
                 version = tr.xpath("./td[5]/text()").extract()[0]

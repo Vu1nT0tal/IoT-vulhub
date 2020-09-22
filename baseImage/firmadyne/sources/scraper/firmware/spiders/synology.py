@@ -5,7 +5,7 @@ from firmware.items import FirmwareImage
 from firmware.loader import FirmwareLoader
 
 import os
-import urlparse
+import urllib.request, urllib.parse, urllib.error
 
 
 class SynologySpider(Spider):
@@ -32,7 +32,7 @@ class SynologySpider(Spider):
                         build = text[0: -1]
 
                     yield Request(
-                        url=urlparse.urljoin(response.url, href),
+                        url=urllib.parse.urljoin(response.url, href),
                         headers={"Referer": response.url},
                         meta={"build": build, "version": version},
                         callback=self.parse)
@@ -64,7 +64,7 @@ class SynologySpider(Spider):
                     version, build = text[0: -1].split("-")
 
                     yield Request(
-                        url=urlparse.urljoin(response.url, href),
+                        url=urllib.parse.urljoin(response.url, href),
                         headers={"Referer": response.url},
                         meta={"build": build, "version": version},
                         callback=self.parse)
