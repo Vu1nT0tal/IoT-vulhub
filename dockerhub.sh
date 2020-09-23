@@ -4,10 +4,11 @@
 
 images=(
     # baseImage
-    "firmianay/ubuntu:16.04"
-    "firmianay/binwalk"
+    "firmianay/ubuntu1604"
     "firmianay/gdbserver"
     "firmianay/qiling"
+    "firmianay/binwalk"
+    "firmianay/binwalk:noentry" # 作为 firmadyne 的基础镜像
     "firmianay/firmadyne"
 
     "firmianay/qemu-user-static:arm"

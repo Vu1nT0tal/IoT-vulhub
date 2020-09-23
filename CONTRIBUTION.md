@@ -9,12 +9,12 @@ Fork 本项目，将你的项目拉取到本地，根据你想制作的靶场环
 镜像继承关系的几个例子（命名暂时先这么定，有更好的想法请告诉我）：
 
 ```
-firmianay/ubuntu:16.04 -> firmianay/qemu-system:armel -> firmianay/vivotek:remote_stack_overflow-sys
-firmianay/ubuntu:16.04 -> firmianay/qemu-user-static:arm -> firmianay/vivotek:remote_stack_overflow-user
+firmianay/ubuntu1604 -> firmianay/qemu-system:armel -> firmianay/vivotek:remote_stack_overflow-sys
+firmianay/ubuntu1604 -> firmianay/qemu-user-static:arm -> firmianay/vivotek:remote_stack_overflow-user
 
-firmianay/ubuntu:16.04 -> firmianay/qemu-system:mips -> firmianay/huawei:cve-2017-17215-sys
+firmianay/ubuntu1604 -> firmianay/qemu-system:mips -> firmianay/huawei:cve-2017-17215-sys
 
-firmianay/ubuntu:16.04 -> firmianay/qemu-system:armhf -> firmianay/netgear:psv-2020-0211-sys
+firmianay/ubuntu1604 -> firmianay/qemu-system:armhf -> firmianay/netgear:psv-2020-0211-sys
 ```
 
 ## 制作漏洞镜像

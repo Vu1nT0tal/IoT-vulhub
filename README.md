@@ -59,7 +59,7 @@ docker-compose -f docker-compose-xxxx.yml down -v
 
 ## 贡献指南
 
-在你研究漏洞的同时，也请给我们提交一份复现环境吧！[贡献指南](./CONTRIBUTION.md)。
+在研究漏洞的同时，也请给我们提交一份复现环境吧！[贡献指南](./CONTRIBUTION.md)。
 
 ## 开源协议
 

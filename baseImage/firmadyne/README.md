@@ -25,22 +25,19 @@ FIRMADYNE 包含如下组件：
 安装依赖：
 
 ```sh
-$ sudo apt-get install busybox-static fakeroot git dmsetup kpartx netcat-openbsd nmap python-psycopg2 python3-psycopg2 snmp uml-utilities util-linux vlan
-$ git clone --recursive https://github.com/firmadyne/firmadyne.git
+$ sudo apt-get install busybox-static git dmsetup kpartx netcat nmap snmp uml-utilities util-linux vlan
+$ git clone --depth=1 --recursive https://github.com/firmadyne/firmadyne.git
 ```
 
 安装 binwalk：
 
 ```sh
-$ git clone https://github.com/ReFirmLabs/binwalk.git
+$ git clone --depth=1 https://github.com/ReFirmLabs/binwalk.git
 $ cd binwalk && sudo ./deps.sh
-$ sudo python ./setup.py install
+$ sudo python3 ./setup.py install
+$ pip3 install python-magic
 
-# Python 2.x
-$ sudo apt-get install python-lzma
-$ sudo -H pip install git+https://github.com/ahupp/python-magic
-$ sudo -H pip install git+https://github.com/sviehb/jefferson
-$ 相比于上游的 [upstream sasquatch](https://github.com/ReFirmLabs/sasquatch)，修改过的 [sasquatch fork](https://github.com/firmadyne/sasquatch) 可以在出错时终止程序。
+# 相比于上游的 [upstream sasquatch](https://github.com/ReFirmLabs/sasquatch)，修改过的 [sasquatch fork](https://github.com/firmadyne/sasquatch) 可以在出错时终止程序。
 ```
 
 下载所有需要的组件（也可以自己[编译](#compiling-from-source)）：
@@ -55,31 +52,35 @@ $ cd ./firmadyne; ./download.sh
 $ sudo apt-get install qemu-system-arm qemu-system-mips qemu-system-x86 qemu-utils
 ```
 
+如果使用 docker，你只需要 build 一下。（但需要先构建 binwalk:noentry 镜像，查看 binwalk 目录）：
+
+```sh
+$ docker build -t firmadyne .
+```
+
 ## Usage
 
 1. 在 `firmadyne.config` 中设置 `FIRMWARE_DIR`，指向 FIRMADYNE 根目录
 2. 下载一个固件，例如：Netgear WNAP320 [v2.0.3](http://www.downloads.netgear.com/files/GDC/WNAP320/WNAP320%20Firmware%20Version%202.0.3.zip) 版本
-3. 使用 extractor 获得文件系统，（`-nk` no kernel；`-np` no parallel operation；`images` 压缩包目录）
-   * `./extractor/extractor.py -np -nk "WNAP320 Firmware Version 2.0.3.zip" images`
-4. 确定固件的体系结构
+3. 使用 extractor 获得文件系统，（`-nk` no kernel；`images` 压缩包目录）
+   * `./extractor/extractor.py -nk "WNAP320 Firmware Version 2.0.3.zip" images`
+4. 获得固件的体系结构
    * `./scripts/getArch.sh ./images/1.tar.gz`
-5. Load the contents of the filesystem for firmware `1` into the database, populating the `object` and `object_to_image` tables.
-   * `./scripts/tar2db.py -i 1 -f ./images/1.tar.gz`
-6. Create the QEMU disk image for firmware `1`.
-   * `sudo ./scripts/makeImage.sh 1`
-7. Infer the network configuration for firmware `1`. Kernel messages are logged to `./scratch/1/qemu.initial.serial.log`.
-   * `./scripts/inferNetwork.sh 1`
-8. Since the Netgear firmware disabled root access from tty0, you need to mount the QEMU disk image and do some modification. 
+5. 创建硬盘镜像
+   * `sudo ./scripts/makeImage.sh 1 mipseb`
+6. 获得网络配置，日志位于 `./scratch/1/qemu.initial.serial.log`
+   * `./scripts/inferNetwork.sh 1 mipseb`
+7. 由于 Netgear 固件禁用了 tty0 的 root 访问，必须先挂载镜像并做一些修改
    * `sudo ./scripts/mount.sh 1`
    * `rm scratch/1/image/etc/securetty`
    * `sudo ./scripts/umount.sh 1`
-9. Emulate firmware `1` with the inferred network configuration. This will modify the configuration of the host system by creating a TAP device and adding a route.
-10. The system should be available over the network, and is ready for analysis. Kernel messages are mirrored to `./scratch/1/qemu.final.serial.log`.
+8. 启动模拟，将创建一个 TAP 设备并添加路由
+   * `./scratch/1/run.sh`
+9. 此时系统应该已经启动并等待分析，内核日志位于 `./scratch/1/qemu.final.serial.log`.
    * `./analyses/snmpwalk.sh 192.168.0.100`
-   * `./analyses/webAccess.py 1 192.168.0.100 log.txt`
-   * `mkdir exploits; ./analyses/runExploits.py -t 192.168.0.100 -o exploits/exploit -e x` (requires Metasploit Framework)
+   * `mkdir exploits; ./analyses/runExploits.py -t 192.168.0.100 -o exploits/exploit -e x`（需要安装 Metasploit）
    * `sudo nmap -O -sV 192.168.0.100`
-11. The default console should be automatically connected to the terminal. You may also login with `root` and `password`. Note that `Ctrl-c` is sent to the guest; use the QEMU monitor command `Ctrl-a + x` to terminate emulation.
+10. 然后就可以使用 `root/password` 登陆。退出 QEMU monitor 需要使用命令 `Ctrl-a + x`。
 
 ## FAQ
 ### `run.sh` is not generated

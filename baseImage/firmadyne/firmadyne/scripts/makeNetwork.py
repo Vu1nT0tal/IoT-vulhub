@@ -215,23 +215,23 @@ def startNetwork(network):
 TAPDEV_%(I)i=tap${IID}_%(I)i
 HOSTNETDEV_%(I)i=${TAPDEV_%(I)i}
 echo "Creating TAP device ${TAPDEV_%(I)i}..."
-sudo tunctl -t ${TAPDEV_%(I)i} -u ${USER}
+tunctl -t ${TAPDEV_%(I)i} -u root
 """
 
     template_vlan = """
 echo "Initializing VLAN..."
 HOSTNETDEV_%(I)i=${TAPDEV_%(I)i}.%(VLANID)i
-sudo ip link add link ${TAPDEV_%(I)i} name ${HOSTNETDEV_%(I)i} type vlan id %(VLANID)i
-sudo ip link set ${TAPDEV_%(I)i} up
+ip link add link ${TAPDEV_%(I)i} name ${HOSTNETDEV_%(I)i} type vlan id %(VLANID)i
+ip link set ${TAPDEV_%(I)i} up
 """
 
     template_2 = """
 echo "Bringing up TAP device..."
-sudo ip link set ${HOSTNETDEV_%(I)i} up
-sudo ip addr add %(HOSTIP)s/24 dev ${HOSTNETDEV_%(I)i}
+ip link set ${HOSTNETDEV_%(I)i} up
+ip addr add %(HOSTIP)s/24 dev ${HOSTNETDEV_%(I)i}
 
 echo "Adding route to %(GUESTIP)s..."
-sudo ip route add %(GUESTIP)s via %(GUESTIP)s dev ${HOSTNETDEV_%(I)i}
+ip route add %(GUESTIP)s via %(GUESTIP)s dev ${HOSTNETDEV_%(I)i}
 """
 
     output = []
@@ -245,20 +245,20 @@ sudo ip route add %(GUESTIP)s via %(GUESTIP)s dev ${HOSTNETDEV_%(I)i}
 def stopNetwork(network):
     template_1 = """
 echo "Deleting route..."
-sudo ip route flush dev ${HOSTNETDEV_%(I)i}
+ip route flush dev ${HOSTNETDEV_%(I)i}
 
 echo "Bringing down TAP device..."
-sudo ip link set ${TAPDEV_%(I)i} down
+ip link set ${TAPDEV_%(I)i} down
 """
 
     template_vlan = """
 echo "Removing VLAN..."
-sudo ip link delete ${HOSTNETDEV_%(I)i}
+ip link delete ${HOSTNETDEV_%(I)i}
 """
 
     template_2 = """
 echo "Deleting TAP device ${TAPDEV_%(I)i}..."
-sudo tunctl -d ${TAPDEV_%(I)i}
+tunctl -d ${TAPDEV_%(I)i}
 """
 
     output = []

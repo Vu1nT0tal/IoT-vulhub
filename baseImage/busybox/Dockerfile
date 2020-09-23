@@ -1,2 +1,2 @@
-FROM firmianay/ubuntu:16.04
+FROM firmianay/ubuntu1604
 LABEL Author="firmianay@gmail.com"

@@ -18,11 +18,6 @@ if check_number $1; then
 fi
 IID=${1}
 
-if check_root; then
-    echo "Error: This script requires root privileges!"
-    exit 1
-fi
-
 if check_arch "${2}"; then
     echo "Error: Invalid architecture!"
     exit 1
@@ -40,8 +35,6 @@ LIBNVRAM=`get_nvram ${ARCH}`
 echo "----Copying Filesystem Tarball----"
 mkdir -p "${WORK_DIR}"
 chmod a+rwx "${WORK_DIR}"
-chown -R "${USER}" "${WORK_DIR}"
-chgrp -R "${USER}" "${WORK_DIR}"
 
 if [ ! -e "${WORK_DIR}/${IID}.tar.gz" ]; then
     if [ ! -e "${TARBALL_DIR}/${IID}.tar.gz" ]; then
@@ -70,7 +63,6 @@ sync
 echo "----Making QEMU Image Mountpoint----"
 if [ ! -e "${IMAGE_DIR}" ]; then
     mkdir "${IMAGE_DIR}"
-    chown "${USER}" "${IMAGE_DIR}"
 fi
 
 echo "----Mounting QEMU Image Partition 1----"

@@ -18,11 +18,6 @@ if check_number $1; then
 fi
 IID=${1}
 
-if check_root; then
-    echo "Error: This script requires root privileges!"
-    exit 1
-fi
-
 echo "----Running----"
 WORK_DIR=`get_scratch ${IID}`
 IMAGE=`get_fs ${IID}`

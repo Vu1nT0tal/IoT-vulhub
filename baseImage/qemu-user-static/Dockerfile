@@ -1,4 +1,4 @@
-FROM firmianay/ubuntu:16.04
+FROM firmianay/ubuntu1604
 LABEL Author="firmianay@gmail.com"
 # 该镜像用于构建可调试的用户级模拟
 

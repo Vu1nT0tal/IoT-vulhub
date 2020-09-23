@@ -5,9 +5,9 @@ RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted
     echo "deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list && \
     echo "deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list && \
     echo "deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list && \
-    apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends python python-pip python-setuptools && \
+    apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends python python-pip python-setuptools python-wheel && \
     # python 2 和 3 在一条命令里安装时 pip 会出错，不知道为什么...
-    apt-get install -y --no-install-recommends python3 python3-pip python3-setuptools && \
+    apt-get install -y --no-install-recommends python3 python3-pip python3-setuptools python3-wheel && \
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U && pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U && \
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
     apt-get install -y --no-install-recommends iputils-ping vim-tiny && \
