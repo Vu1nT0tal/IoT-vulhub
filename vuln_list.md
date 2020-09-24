@@ -17,4 +17,8 @@
 - [Netgear R8300 upnpd 远程代码执行漏洞](https://github.com/firmianay/IoT-vulhub/tree/master/Netgear/PSV-2020-0211)
 - [NETGEAR WNAP320 远程命令执行漏洞（CVE-2016-1555）](https://github.com/firmianay/IoT-vulhub/tree/master/Netgear/CVE-2016-1555)
 
+## D-Link
+
+- [D-Link DIR-842 路由器缓冲区溢出漏洞（CVE-2020-8962）](https://github.com/firmianay/IoT-vulhub/tree/master/D-Link/CVE-2020-8962)
+
 ## Linksys
