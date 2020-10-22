@@ -70,17 +70,13 @@ $ docker build -t firmadyne .
    * `sudo ./scripts/makeImage.sh 1 mipseb`
 6. 获得网络配置，日志位于 `./scratch/1/qemu.initial.serial.log`
    * `./scripts/inferNetwork.sh 1 mipseb`
-7. 由于 Netgear 固件禁用了 tty0 的 root 访问，必须先挂载镜像并做一些修改
-   * `sudo ./scripts/mount.sh 1`
-   * `rm scratch/1/image/etc/securetty`
-   * `sudo ./scripts/umount.sh 1`
-8. 启动模拟，将创建一个 TAP 设备并添加路由
+7. 启动模拟，将创建一个 TAP 设备并添加路由
    * `./scratch/1/run.sh`
-9. 此时系统应该已经启动并等待分析，内核日志位于 `./scratch/1/qemu.final.serial.log`.
+8. 此时系统应该已经启动并等待分析，内核日志位于 `./scratch/1/qemu.final.serial.log`。可以使用 `./scripts/mount.sh 1` 和 `./scripts/umount.sh 1` 对文件系统进行挂载。
    * `./analyses/snmpwalk.sh 192.168.0.100`
    * `mkdir exploits; ./analyses/runExploits.py -t 192.168.0.100 -o exploits/exploit -e x`（需要安装 Metasploit）
    * `sudo nmap -O -sV 192.168.0.100`
-10. 然后就可以使用 `root/password` 登陆。退出 QEMU monitor 需要使用命令 `Ctrl-a + x`。
+9. 然后就可以使用 `root/password` 登陆。退出 QEMU monitor 需要使用命令 `Ctrl-a + x`。
 
 ## FAQ
 ### `run.sh` is not generated

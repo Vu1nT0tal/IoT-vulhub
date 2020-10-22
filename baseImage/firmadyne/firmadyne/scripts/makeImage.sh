@@ -32,21 +32,26 @@ IMAGE_DIR=`get_fs_mount ${IID}`
 CONSOLE=`get_console ${ARCH}`
 LIBNVRAM=`get_nvram ${ARCH}`
 
-echo "----Copying Filesystem Tarball----"
+echo "----Creating working directory ${WORK_DIR}----"
 mkdir -p "${WORK_DIR}"
 chmod a+rwx "${WORK_DIR}"
 
-if [ ! -e "${WORK_DIR}/${IID}.tar.gz" ]; then
-    if [ ! -e "${TARBALL_DIR}/${IID}.tar.gz" ]; then
-        echo "Error: Cannot find tarball of root filesystem for ${IID}!"
-        exit 1
-    else
-        cp "${TARBALL_DIR}/${IID}.tar.gz" "${WORK_DIR}/${IID}.tar.gz"
-    fi
+if [ ! -e "${TARBALL_DIR}/${IID}.tar.gz" ]; then
+    echo "Error: Cannot find tarball of root filesystem for ${IID}!"
+    exit 1
 fi
 
-echo "----Creating QEMU Image----"
-qemu-img create -f raw "${IMAGE}" 1G
+TARBALL_SIZE=$(tar ztvf "${TARBALL_DIR}/${IID}.tar.gz" --totals 2>&1 |tail -1|cut -f4 -d' ')
+MINIMUM_IMAGE_SIZE=$((TARBALL_SIZE + 10 * 1024 * 1024))
+echo "----The size of root filesystem '${TARBALL_DIR}/${IID}.tar.gz' is $TARBALL_SIZE-----"
+IMAGE_SIZE=8388608
+while [ $IMAGE_SIZE -le $MINIMUM_IMAGE_SIZE ]
+do
+    IMAGE_SIZE=$((IMAGE_SIZE*2))
+done
+
+echo "----Creating QEMU Image ${IMAGE} with size ${IMAGE_SIZE}----"
+qemu-img create -f raw "${IMAGE}" $IMAGE_SIZE
 chmod a+rw "${IMAGE}"
 
 echo "----Creating Partition Table----"
@@ -55,12 +60,13 @@ echo -e "o\nn\np\n1\n\n\nw" | /sbin/fdisk "${IMAGE}"
 echo "----Mounting QEMU Image----"
 DEVICE=$(get_device "$(kpartx -a -s -v "${IMAGE}")")
 sleep 1
+echo "----Device mapper created at ${DEVICE}----"
 
 echo "----Creating Filesystem----"
 mkfs.ext2 "${DEVICE}"
 sync
 
-echo "----Making QEMU Image Mountpoint----"
+echo "----Making QEMU Image Mountpoint at ${IMAGE_DIR}----"
 if [ ! -e "${IMAGE_DIR}" ]; then
     mkdir "${IMAGE_DIR}"
 fi
@@ -68,9 +74,8 @@ fi
 echo "----Mounting QEMU Image Partition 1----"
 mount "${DEVICE}" "${IMAGE_DIR}"
 
-echo "----Extracting Filesystem Tarball----"
-tar -xf "${WORK_DIR}/$IID.tar.gz" -C "${IMAGE_DIR}"
-rm "${WORK_DIR}/${IID}.tar.gz"
+echo "----Extracting Filesystem Tarball to Mountpoint----"
+tar -xf "${TARBALL_DIR}/${IID}.tar.gz" -C "${IMAGE_DIR}"
 
 echo "----Creating FIRMADYNE Directories----"
 mkdir "${IMAGE_DIR}/firmadyne/"
@@ -98,6 +103,7 @@ chmod a+x "${IMAGE_DIR}/firmadyne/preInit.sh"
 echo "----Unmounting QEMU Image----"
 sync
 umount "${DEVICE}"
+echo "----Deleting device mapper----"
 kpartx -d "${IMAGE}"
 losetup -d "${DEVICE}" &>/dev/null
 dmsetup remove $(basename "$DEVICE") &>/dev/null

@@ -11,9 +11,7 @@ images=(
     "firmianay/binwalk:noentry" # 作为 firmadyne 的基础镜像
     "firmianay/firmadyne"
 
-    "firmianay/qemu-user-static:arm"
-    "firmianay/qemu-user-static:mips"
-    "firmianay/qemu-user-static:mipsel"
+    "firmianay/qemu-user-static"
     "firmianay/qemu-system:arm"
     "firmianay/qemu-system:mips"
     "firmianay/qemu-system:mipsel"

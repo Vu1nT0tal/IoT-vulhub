@@ -21,4 +21,9 @@
 
 - [D-Link DIR-842 路由器缓冲区溢出漏洞（CVE-2020-8962）](https://github.com/firmianay/IoT-vulhub/tree/master/D-Link/CVE-2020-8962)
 
+## Tenda
+
+- [TENDA AC15 路由器远程代码执行（CVE-2017-13772）](https://github.com/firmianay/IoT-vulhub/tree/master/Tenda/CVE-2017-13772)
+
 ## Linksys
+

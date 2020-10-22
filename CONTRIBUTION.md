@@ -10,7 +10,7 @@ Fork 本项目，将你的项目拉取到本地，根据你想制作的靶场环
 
 ```
 firmianay/ubuntu1604 -> firmianay/qemu-system:armel -> firmianay/vivotek:remote_stack_overflow-sys
-firmianay/ubuntu1604 -> firmianay/qemu-user-static:arm -> firmianay/vivotek:remote_stack_overflow-user
+firmianay/ubuntu1604 -> firmianay/qemu-user-static -> firmianay/vivotek:remote_stack_overflow-user
 
 firmianay/ubuntu1604 -> firmianay/qemu-system:mips -> firmianay/huawei:cve-2017-17215-sys
 
