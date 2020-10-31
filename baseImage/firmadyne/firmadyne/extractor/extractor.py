@@ -305,7 +305,7 @@ class ExtractionItem(object):
                             self.get_kernel_status(), self.get_rootfs_status(),
                             self.extractor.do_kernel, self.extractor.do_rootfs))
 
-            for analysis in [self._check_archive, self._check_firmware,
+            for analysis in [self._check_archive, self._check_encryption, self._check_firmware,
                              self._check_kernel, self._check_rootfs, self._check_compressed]:
                 # Move to temporary directory so binwalk does not write to input
                 os.chdir(self.temp)
@@ -353,6 +353,20 @@ class ExtractionItem(object):
         If this file is an archive, recurse over its contents, unless it matches an extracted root filesystem.
         """
         return self._check_recursive("archive")
+
+    def _check_encryption(self):
+        header = b""
+        with open(self.item, "rb") as f:
+            header = f.read(4)
+
+        if header == b"SHRS":
+            print(">>>> Found D-Link encrypted firmware in %s!" % (self.item))
+
+            # Source: https://github.com/0xricksanchez/dlink-decrypt
+            command = 'dd if=%s skip=1756 iflag=skip_bytes status=none | openssl aes-128-cbc -d -nopad -nosalt -K "c05fbf1936c99429ce2a0781f08d6ad8" -iv "67c6697351ff4aec29cdbaabf2fbe346" --nosalt -in /dev/stdin -out %s > /dev/null 2>&1' % (self.item, os.path.join(self.temp, "dlink_decrypt"))
+            os.system(command)
+            return True
+        return False
 
     def _check_firmware(self):
         """
@@ -465,7 +479,6 @@ class ExtractionItem(object):
                     unix = Extractor.io_find_rootfs(module.extractor.directory)
 
                     if not unix[0]:
-                        self.printf(">>>> Extraction failed!")
                         return False
 
                     self.printf(">>>> Found Linux filesystem in %s!" % unix[1])
