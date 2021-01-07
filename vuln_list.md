@@ -27,3 +27,7 @@
 
 ## Linksys
 
+
+## TODO list
+
+- CVE-2020-10987：https://nosec.org/home/detail/4634.html https://blog.securityevaluators.com/tenda-ac1900-vulnerabilities-discovered-and-exploited-e8e26aa0bc68

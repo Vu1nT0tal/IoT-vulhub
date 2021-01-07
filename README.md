@@ -22,6 +22,8 @@ pip install docker-compose
 
 ## 使用说明
 
+**在构建 qemu-system 前务必下载对应的 qemu 镜像！**
+
 ```sh
 # 下载项目
 wget https://github.com/firmianay/IoT-vulhub/archive/master.zip -O iot-vulhub-master.zip
@@ -30,7 +32,7 @@ cd iot-vulhub-master
 
 # （可选）构建 binwalk 容器，方便使用
 cd baseImage/binwalk
-docker build -t binwalk . # 本地编译
+docker build -t binwalk .           # 本地编译
 docker pull firmianay/binwalk       # 或者拉取
 
 # 进入某一个漏洞/环境的目录
