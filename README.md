@@ -55,6 +55,10 @@ docker-compose -f docker-compose-xxxx.yml up
 docker-compose -f docker-compose-xxxx.yml down -v
 ```
 
+注意事项：
+- 退出 qemu 用 `Ctrl+A`，再输入 `X`
+- 容器中使用 systemctl 可能会有问题，使用 `/etc/init.d/xxxx start` 代替
+
 ## 漏洞环境列表
 
 请查看[漏洞环境列表](./vuln_list.md)。

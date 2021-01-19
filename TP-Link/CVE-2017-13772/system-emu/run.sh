@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# 启动 ssh 服务
 /etc/init.d/ssh start
+
+# 配置网卡
 tunctl -t tap0
 ifconfig tap0 192.168.2.1/24
 
+# 进入 qemu 镜像目录
 cd /root/images
 
 /usr/bin/expect<<EOF
