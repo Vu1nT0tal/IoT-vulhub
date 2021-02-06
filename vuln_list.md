@@ -12,6 +12,7 @@
 
 - [TP-Link WR940N 家庭 WiFi 路由器远程代码执行漏洞（CVE-2017-13772）](https://github.com/firmianay/IoT-vulhub/tree/master/TP-Link/CVE-2017-13772)
 - [TP-Link SR20 本地网络远程代码执行漏洞](https://github.com/firmianay/IoT-vulhub/tree/master/TP-Link/tddp-rce)
+- [TP-Link WR841N 栈溢出漏洞（CVE-2020-8423）](https://github.com/firmianay/IoT-vulhub/tree/master/TP-Link/CVE-2020-8423)
 
 ## Netgear
 
@@ -32,4 +33,3 @@
 ## TODO list
 
 - CVE-2020-10987：https://nosec.org/home/detail/4634.html https://blog.securityevaluators.com/tenda-ac1900-vulnerabilities-discovered-and-exploited-e8e26aa0bc68
-- PSV-2020-0211：https://mp.weixin.qq.com/s/wfY6OcrvM4zsjFMQnP3vgA

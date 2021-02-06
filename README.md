@@ -58,6 +58,10 @@ docker-compose -f docker-compose-xxxx.yml down -v
 注意事项：
 - 退出 qemu 用 `Ctrl+A`，再输入 `X`
 - 容器中使用 systemctl 可能会有问题，使用 `/etc/init.d/xxxx start` 代替
+- 如果要从实体机直接访问 Qemu，例如打开固件的 web 界面（实体机 -> Docker -> Qemu）：
+  - 首先在启动 docker 时需要将 ssh 端口映射出来，如 `-p 1234:22`
+  - 然后在本地开启端口转发，如 `ssh -D 2345 root@127.0.0.1 -p 1234`
+  - 最后对浏览器设置 socks5 代理 `127.0.0.1:2345`。Burpsuite/Python利用脚本同理。
 
 ## 漏洞环境列表
 

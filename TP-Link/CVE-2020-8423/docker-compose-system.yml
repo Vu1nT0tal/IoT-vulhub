@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+    system-emu:
+        container_name: tplink-system
+        build:
+            context: .
+            dockerfile: ./system-emu/Dockerfile
+        privileged: true
+        ports:
+            - "1234:22"

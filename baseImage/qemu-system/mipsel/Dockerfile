@@ -5,7 +5,7 @@ WORKDIR /root
 
 RUN apt-get update \
     && apt-get install -y qemu-system-mipsel \
-    && apt-get install -y --no-install-recommends bridge-utils uml-utilities expect gdb-multiarch git python3-dev openssh-server netcat libssl-dev libffi-dev build-essential tcpdump \
+    && apt-get install -y --no-install-recommends bridge-utils uml-utilities expect gdb-multiarch git python3-dev openssh-server netcat curl libssl-dev libffi-dev build-essential tcpdump \
     && sed -i "s/PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config && echo "root:root" | chpasswd \
     && git clone --depth=1 https://github.com/hugsy/gef.git \
     && cp gef/gef.py ~/.gef.py && echo "source ~/.gef.py" > ~/.gdbinit && echo "export LC_CTYPE=C.UTF-8" >> ~/.bashrc \
