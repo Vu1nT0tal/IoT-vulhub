@@ -3,17 +3,17 @@
 
 ## 漏洞环境
 
-### 用户级模拟 - 快速验证
+使用 `firmianay/binwalk` 解压固件：
+
+```sh
+$ docker run --rm -v $PWD/firmware/:/root/firmware firmianay/binwalk -Mer "/root/firmware/CC8160-VVTK-0100d.flash.pkg"
+```
+
+### 用户级模拟 - 快速验证
 
 手动构建：
 
 ```sh
-# 构建 binwalk 并解包固件
-$ cd baseImage/binwalk
-$ docker build -t binwalk .
-$ cd Vivotek/remote_stack_overflow
-$ docker run -v $PWD/firmware:/root/firmware binwalk -Mer /root/firmware/CC8160-VVTK-0100d.flash.zip
-
 # 构建漏洞环境
 $ docker-compose -f docker-compose-user.yml build
 
@@ -24,20 +24,18 @@ $ docker-compose -f docker-compose-user.yml up
 直接拉取：
 
 ```sh
-# 拉取 binwalk 并解包固件
-$ docker pull firmianay/binwalk
-$ docker run -v $PWD/firmware:/root/firmware firmianay/binwalk -Mer /root/firmware/CC8160-VVTK-0100d.flash.zip
-
 # 拉取漏洞环境并启动
 $ docker pull firmianay/vivotek:remote_stack_overflow-user
-$ docker run --privileged -p 8888:80 -it vivotek:remote_stack_overflow-user
+$ docker run --rm --privileged -p 8888:80 -it vivotek:remote_stack_overflow-user
 ```
 
 ### 系统级模拟 - 动态调试
 
-手动构建，解包过程同上。如果想要动态调试，还需要编译对应的 arm gdbserver 并复制到 system-emu/tools 目录。
+手动构建，解包过程同上。如果想要动态调试，还需要编译对应的 armel gdbserver 并复制到 system-emu/tools 目录。
 
 ```sh
+# cp baseImage/gdbserver/7.11.1/armel-gdbserver-7.11.1 CVE-2020-3331/system-emu/tools/gdbserver
+
 # 先构建漏洞环境 qemu-system:arm 环境
 $ cd baseImage/qemu-system/armel
 $ docker build -t qemu-system:armel .
@@ -56,7 +54,7 @@ $ ssh root@192.168.2.2
 
 ```sh
 $ docker pull firmianay/vivotek:remote_stack_overflow-system
-$ docker run --privileged -it vivotek:remote_stack_overflow-system
+$ docker run --rm --privileged -it vivotek:remote_stack_overflow-system
 ```
 
 ## 漏洞复现

@@ -6,7 +6,7 @@
 使用 `firmianay/binwalk` 解压固件：
 
 ```sh
-$ docker run --rm -v $PWD/firmware/:/root/firmware firmianay/binwalk -Mer "/root/firmware/R8300-V1.0.2.130_1.0.99.zip"
+$ docker run --rm -v $PWD/firmware/:/root/firmware firmianay/binwalk -Mer "/root/firmware/R8300-V1.0.2.130_1.0.99.chk"
 ```
 
 需要先构建 buildroot 环境，交叉编译得到 `nvram.so`：

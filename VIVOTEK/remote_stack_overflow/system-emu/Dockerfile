@@ -4,7 +4,7 @@ LABEL Author="firmianay@gmail.com"
 WORKDIR /root
 
 # 复制固件
-COPY ./firmware/_*/_*/_31* /root/firmware
+COPY ./firmware/_*/_31* /root/firmware
 RUN cp -r ./firmware/_root*/squashfs-root ./ \
     && rm -rf ./squashfs-root/etc && cp -r ./firmware/defconf/_*/_*/etc ./squashfs-root \
     && tar czf squashfs-root.tar.gz ./squashfs-root \

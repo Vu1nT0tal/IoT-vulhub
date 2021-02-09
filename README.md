@@ -32,7 +32,7 @@ cd iot-vulhub-master
 
 # （可选）构建 binwalk 容器，方便使用
 cd baseImage/binwalk
-docker build -t binwalk .           # 本地编译
+docker build -t firmianay/binwalk . # 本地编译
 docker pull firmianay/binwalk       # 或者拉取
 
 # 进入某一个漏洞/环境的目录
