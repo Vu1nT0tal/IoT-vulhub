@@ -17,7 +17,7 @@ curl -s https://get.docker.com/ | sh
 service docker start
 
 # 安装 compose
-pip install docker-compose 
+pip install docker-compose
 ```
 
 ## 使用说明

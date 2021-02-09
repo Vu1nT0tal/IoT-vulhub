@@ -6,6 +6,6 @@ services:
         build:
           context: .
           dockerfile: ./user-emu/Dockerfile
-        ports:
-          - "1234:80"
         privileged: true
+        ports:
+          - "8888:80"

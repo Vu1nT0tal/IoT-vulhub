@@ -54,4 +54,4 @@ send "/usr/sbin/httpd\r"
 expect eof
 EOF
 
-#send "./tools/gdbserver --attach :1234 `ps | grep -v grep | grep httpd | awk '{print $1}'`"
+#send "./tools/gdbserver --attach :6666 `ps | grep -v grep | grep httpd | awk '{print $1}'`"

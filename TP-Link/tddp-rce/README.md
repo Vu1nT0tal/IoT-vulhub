@@ -5,10 +5,13 @@
 
 ## 漏洞复现
 
-```sh
-# 解压固件
-$ docker run --rm -v $PWD/firmware/:/root/firmware firmianay/binwalk -Mer /root/firmware/tpra_sr20v1_us-up-ver1-2-1-P522_20180518-rel77140_2018-05-21_08.42.04.bin
+使用 `firmianay/binwalk` 解压固件：
 
+```sh
+$ docker run --rm -v $PWD/firmware/:/root/firmware firmianay/binwalk -Mer "/root/firmware/tpra_sr20v1_us-up-ver1-2-1-P522_20180518-rel77140_2018-05-21_08.42.04.bin"
+```
+
+```sh
 $ docker-compose -f docker-compose-system.yml build
 $ docker-compose -f docker-compose-system.yml up
 
