@@ -46,7 +46,8 @@ Vivotek/                                    # 固件厂商
 - 调试端口：6666
 - nc 本地监听端口：7777
 - 80 端口映射到本机端口：8888
-- SimpleHTTPServer 端口：8000
+- python3 http.server 端口：8000
+- msf 反向 shell 端口：31337
 - ssh 映射到本机端口：1234
 - ssh socks 本机代理端口：2345
 
