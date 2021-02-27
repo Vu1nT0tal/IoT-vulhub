@@ -22,6 +22,7 @@
 
 ## D-Link
 
+- [D-Link DIR-859 命令注入漏洞（CVE-2019-17621）](https://github.com/firmianay/IoT-vulhub/tree/master/D-Link/CVE-2019-17621)
 - [D-Link DIR-842 路由器缓冲区溢出漏洞（CVE-2020-8962）](https://github.com/firmianay/IoT-vulhub/tree/master/D-Link/CVE-2020-8962)
 
 ## Tenda

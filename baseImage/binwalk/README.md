@@ -1,5 +1,7 @@
 # binwalk docker
 
+commit 3154b0012e7dbaf2b20edd5c0a2350ec64009869
+
 ## 构建镜像
 
 ```sh

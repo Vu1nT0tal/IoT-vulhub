@@ -53,7 +53,7 @@ $ cd ./firmadyne; ./download.sh
 $ sudo apt-get install qemu-system-arm qemu-system-mips qemu-system-x86 qemu-utils
 ```
 
-如果使用 docker，你只需要 build 一下。（但需要先构建 binwalk:noentry 镜像，查看 binwalk 目录）：
+如果使用 docker，你只需要 build 一下。（但需要先构建 `binwalk:noentry` 镜像，查看 binwalk 目录）：
 
 ```sh
 $ docker build -t firmadyne .
