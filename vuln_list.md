@@ -28,7 +28,7 @@
 ## Tenda
 
 - [Tenda AC15 路由器远程代码执行（CVE-2018-5767）](https://github.com/firmianay/IoT-vulhub/tree/master/Tenda/CVE-2018-5767)
-- [Tenda AC15 路由器缓冲区溢出漏洞（CVE-2018-16333）](https://github.com/firmianay/IoT-vulhub/tree/master/Tenda/CVE-2018-16333)
+- *EXP* | [Tenda AC15 路由器缓冲区溢出漏洞（CVE-2018-16333）](https://github.com/firmianay/IoT-vulhub/tree/master/Tenda/CVE-2018-16333)
 
 ## Cisco
 
