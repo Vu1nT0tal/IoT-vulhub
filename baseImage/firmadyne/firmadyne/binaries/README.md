@@ -1,19 +1,17 @@
-Binary files used by the FIRMADYNE framework should be placed here. These include:
+# firmadyne 所需文件
 
-* console
-   * `console.armel`
-   * `console.mipseb`
-   * `console.mipsel`
-
-* libnvram
-   * `libnvram.so.armel`
-   * `libnvram.so.mipseb`
-   * `libnvram.so.mipsel`
-
-* kernel
-   * `zImage.armel`
-   * `vmlinux.mipseb`
-   * `vmlinux.mipsel`
+- console
+   - `console.armel`
+   - `console.mipseb`
+   - `console.mipsel`
+- libnvram
+   - `libnvram.so.armel`
+   - `libnvram.so.mipseb`
+   - `libnvram.so.mipsel`
+- kernel
+   - `zImage.armel`
+   - `vmlinux.mipseb`
+   - `vmlinux.mipsel`
 
 
 ```sh

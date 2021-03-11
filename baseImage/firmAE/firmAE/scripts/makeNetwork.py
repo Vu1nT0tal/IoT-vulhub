@@ -53,13 +53,20 @@ QEMU_MACHINE=`get_qemu_machine ${ARCHEND}`
 QEMU_ROOTFS=`get_qemu_disk ${ARCHEND}`
 WORK_DIR=`get_scratch ${IID}`
 
-DEVICE=$(get_device_firmadyne "$(kpartx -a -s -v "${WORK_DIR}/image.raw")")
 # DEVICE=`add_partition "${WORK_DIR}/image.raw"`
+DEVICE=$(get_device_firmadyne "$(kpartx -a -s -v "${WORK_DIR}/image.raw")")
 mount ${DEVICE} ${WORK_DIR}/image > /dev/null
 
 echo "%(NETWORK_TYPE)s" > ${WORK_DIR}/image/firmadyne/network_type
 echo "%(NET_BRIDGE)s" > ${WORK_DIR}/image/firmadyne/net_bridge
 echo "%(NET_INTERFACE)s" > ${WORK_DIR}/image/firmadyne/net_interface
+
+echo "#!/firmadyne/sh" > ${WORK_DIR}/image/firmadyne/debug.sh
+if (echo ${RUN_MODE} | grep -q "debug"); then
+    echo "while (true); do /firmadyne/busybox nc -lp 31337 -e /firmadyne/sh; done &" >> ${WORK_DIR}/image/firmadyne/debug.sh
+    echo "/firmadyne/busybox telnetd -p 31338 -l /firmadyne/sh" >> ${WORK_DIR}/image/firmadyne/debug.sh
+fi
+chmod a+x ${WORK_DIR}/image/firmadyne/debug.sh
 
 sleep 1
 sync
@@ -68,7 +75,8 @@ del_partition ${DEVICE:0:$((${#DEVICE}-2))}
 
 %(START_NET)s
 
-echo -n "Starting emulation of firmware... "
+echo "Starting firmware emulation..."
+
 %(QEMU_ENV_VARS)s ${QEMU} -m 1024 -M ${QEMU_MACHINE} -kernel ${KERNEL} \\
     %(QEMU_DISK)s -append "root=${QEMU_ROOTFS} console=ttyS0 nandsim.parts=64,64,64,64,64,64,64,64,64,64 %(QEMU_INIT)s rw debug print-fatal-signals=1 FIRMAE_NETWORK=${FIRMAE_NETWORK} FIRMAE_NVRAM=${FIRMAE_NVRAM} FIRMAE_KERNEL=${FIRMAE_KERNEL} FIRMAE_ETC=${FIRMAE_ETC} ${QEMU_DEBUG}" \\
     -serial file:${WORK_DIR}/qemu.final.serial.log \\
@@ -83,8 +91,8 @@ echo "Done!"
 """
 
 def mountImage(targetDir):
-    loopFile = subprocess.check_output(['bash', '-c', 'source firmae.config && get_device_firmadyne "$(kpartx -a -s -v "%s/image.raw")"' % targetDir]).decode().strip()
     # loopFile = subprocess.check_output(['bash', '-c', 'source firmae.config && add_partition %s/image.raw' % targetDir]).decode().strip()
+    loopFile = subprocess.check_output(['bash', '-c', 'source firmae.config && get_device_firmadyne "$(kpartx -a -s -v "%s/image.raw")"' % targetDir]).decode().strip()
     os.system('mount %s %s/image > /dev/null' % (loopFile, targetDir))
     time.sleep(1)
     return loopFile
@@ -101,7 +109,6 @@ def checkVariable(key):
 
 def stripTimestamps(data):
     lines = data.split(b"\n")
-    #throw out the timestamps
     prog = re.compile(b"^\[[^\]]*\] firmadyne: ")
     lines = [prog.sub(b"", l) for l in lines]
     return lines
@@ -306,38 +313,37 @@ def startNetwork(network):
 TAPDEV_%(I)i=tap${IID}_%(I)i
 HOSTNETDEV_%(I)i=${TAPDEV_%(I)i}
 echo "Creating TAP device ${TAPDEV_%(I)i}..."
-# sudo tunctl -t ${TAPDEV_%(I)i} -u ${USER}
-sudo tunctl -t ${TAPDEV_%(I)i} -u root
+tunctl -t ${TAPDEV_%(I)i} -u root
 """
 
     if checkVariable("FIRMAE_NETWORK"):
         template_vlan = """
 echo "Initializing VLAN..."
 HOSTNETDEV_%(I)i=${TAPDEV_%(I)i}.%(VLANID)i
-sudo ip link add link ${TAPDEV_%(I)i} name ${HOSTNETDEV_%(I)i} type vlan id %(VLANID)i
-sudo ip link set ${TAPDEV_%(I)i} up
+ip link add link ${TAPDEV_%(I)i} name ${HOSTNETDEV_%(I)i} type vlan id %(VLANID)i
+ip link set ${TAPDEV_%(I)i} up
 """
 
         template_2 = """
 echo "Bringing up TAP device..."
-sudo ip link set ${HOSTNETDEV_%(I)i} up
-sudo ip addr add %(HOSTIP)s/24 dev ${HOSTNETDEV_%(I)i}
+ip link set ${HOSTNETDEV_%(I)i} up
+ip addr add %(HOSTIP)s/24 dev ${HOSTNETDEV_%(I)i}
 """
     else:
         template_vlan = """
 echo "Initializing VLAN..."
 HOSTNETDEV_%(I)i=${TAPDEV_%(I)i}.%(VLANID)i
-sudo ip link add link ${TAPDEV_%(I)i} name ${HOSTNETDEV_%(I)i} type vlan id %(VLANID)i
-sudo ip link set ${HOSTNETDEV_%(I)i} up
+ip link add link ${TAPDEV_%(I)i} name ${HOSTNETDEV_%(I)i} type vlan id %(VLANID)i
+ip link set ${HOSTNETDEV_%(I)i} up
 """
 
         template_2 = """
 echo "Bringing up TAP device..."
-sudo ip link set ${HOSTNETDEV_%(I)i} up
-sudo ip addr add %(HOSTIP)s/24 dev ${HOSTNETDEV_%(I)i}
+ip link set ${HOSTNETDEV_%(I)i} up
+ip addr add %(HOSTIP)s/24 dev ${HOSTNETDEV_%(I)i}
 
 echo "Adding route to %(GUESTIP)s..."
-sudo ip route add %(GUESTIP)s via %(GUESTIP)s dev ${HOSTNETDEV_%(I)i}
+ip route add %(GUESTIP)s via %(GUESTIP)s dev ${HOSTNETDEV_%(I)i}
 """
 
     output = []
@@ -351,17 +357,17 @@ sudo ip route add %(GUESTIP)s via %(GUESTIP)s dev ${HOSTNETDEV_%(I)i}
 def stopNetwork(network):
     template_1 = """
 echo "Bringing down TAP device..."
-sudo ip link set ${TAPDEV_%(I)i} down
+ip link set ${TAPDEV_%(I)i} down
 """
 
     template_vlan = """
 echo "Removing VLAN..."
-sudo ip link delete ${HOSTNETDEV_%(I)i}
+ip link delete ${HOSTNETDEV_%(I)i}
 """
 
     template_2 = """
 echo "Deleting TAP device ${TAPDEV_%(I)i}..."
-sudo tunctl -d ${TAPDEV_%(I)i}
+tunctl -d ${TAPDEV_%(I)i}
 """
 
     output = []
@@ -463,7 +469,6 @@ def readWithException(filePath):
 
     return fileData
 
-
 def inferNetwork(iid, arch, endianness, init):
     global SCRIPTDIR
     global SCRATCHDIR
@@ -505,8 +510,9 @@ def inferNetwork(iid, arch, endianness, init):
     if out:
         out.write('\n/firmadyne/network.sh &\n')
         out.write('/firmadyne/run_service.sh &\n')
+        out.write('/firmadyne/debug.sh\n')
         # trendnet TEW-828DRU_1.0.7.2, etc...
-        out.write('sleep 36000\n')
+        out.write('/firmadyne/busybox sleep 36000\n')
         out.close()
 
     umountImage(targetDir, loopFile)

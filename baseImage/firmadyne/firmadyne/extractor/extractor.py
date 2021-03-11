@@ -240,9 +240,11 @@ class ExtractionItem(object):
         kernel_done = os.path.isfile(self.get_kernel_path()) if \
             self.extractor.do_kernel and self.output else \
             not self.extractor.do_kernel
+
         rootfs_done = os.path.isfile(self.get_rootfs_path()) if \
             self.extractor.do_rootfs and self.output else \
             not self.extractor.do_rootfs
+
         self.status = (kernel_done, rootfs_done)
 
         return self.get_status()
@@ -393,11 +395,6 @@ class ExtractionItem(object):
                             kernel = ExtractionItem(self.extractor, tmp_path, self.depth)
 
                             return kernel.extract()
-                    # elif "RAMDisk Image" in entry.description:
-                    #     self.printf(">>>> %s" % entry.description)
-                    #     self.printf(">>>> Skipping: RAMDisk / initrd")
-                    #     self.terminate = True
-                    #     return True
 
                 # TP-Link or TRX
                 elif not self.get_kernel_status() and not self.get_rootfs_status() and \
@@ -549,8 +546,6 @@ class ExtractionItem(object):
                             else:
                                 new_item = ExtractionItem(self.extractor, os.path.join(root, filename), self.depth+1)
                                 if new_item.extract():
-                                    # check that we are actually done before performing early termination. for example,
-                                    # we might decide to skip on one subitem, but we still haven't finished
                                     if self.update_status():
                                         return True
                             count += 1

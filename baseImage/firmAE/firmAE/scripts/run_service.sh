@@ -5,7 +5,7 @@ BINARY=`${BUSYBOX} cat /firmadyne/service`
 BINARY_NAME=`${BUSYBOX} basename ${BINARY}`
 
 if (${FIRMAE_ETC}); then
-  sleep 120
+  ${BUSYBOX} sleep 120
   $BINARY &
 
   while (true); do

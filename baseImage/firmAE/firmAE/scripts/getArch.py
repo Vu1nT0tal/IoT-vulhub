@@ -3,10 +3,8 @@
 import sys
 import tarfile
 import subprocess
-# import psycopg2
 
 archMap = {"MIPS64":"mips64", "MIPS":"mips", "ARM64":"arm64", "ARM":"arm", "Intel 80386":"intel", "x86-64":"intel64", "PowerPC":"ppc", "unknown":"unknown"}
-
 endMap = {"LSB":"el", "MSB":"eb"}
 
 def getArch(filetype):
@@ -22,7 +20,6 @@ def getEndian(filetype):
     return None
 
 infile = sys.argv[1]
-# psql_ip = sys.argv[2]
 base = infile[infile.rfind("/") + 1:]
 iid = base[:base.find(".")]
 
@@ -54,14 +51,6 @@ for info in infos:
     if arch and endian:
         print(arch + endian)
         subprocess.call(["rm", "-rf", "/tmp/" + iid])
-        # dbh = psycopg2.connect(database="firmware",
-        #                        user="firmadyne",
-        #                        password="firmadyne",
-        #                        host=psql_ip)
-        # cur = dbh.cursor()
-        # query = """UPDATE image SET arch = '%s' WHERE id = %s;"""
-        # cur.execute(query % (arch+endian, iid))
-        # dbh.commit()
 
         with open("scratch/" + iid + "/fileType", "w") as f:
             f.write(filetype)

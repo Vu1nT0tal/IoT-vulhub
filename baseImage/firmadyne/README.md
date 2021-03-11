@@ -1,4 +1,4 @@
-# FIRMADYNE 模拟
+# firmadyne 模拟
 
 - [Introduction](#introduction)
 - [Setup](#setup)
@@ -12,7 +12,7 @@
 
 ## Introduction
 
-FIRMADYNE 包含如下组件：
+firmadyne 包含如下组件：
 
 * 修改过的内核 (MIPS: [v2.6](https://github.com/firmadyne/kernel-v2.6), ARM: [v4.1](https://github.com/firmadyne/kernel-v4.1),
 [v3.10](https://github.com/firmadyne/kernel-v3.10))
@@ -56,12 +56,12 @@ $ sudo apt-get install qemu-system-arm qemu-system-mips qemu-system-x86 qemu-uti
 如果使用 docker，你只需要 build 一下。（但需要先构建 `binwalk:noentry` 镜像，查看 binwalk 目录）：
 
 ```sh
-$ docker build -t firmadyne .
+$ docker build -t firmianay/firmadyne .
 ```
 
 ## Usage
 
-1. 在 `firmadyne.config` 中设置 `FIRMWARE_DIR`，指向 FIRMADYNE 根目录
+1. 在 `firmadyne.config` 中设置 `FIRMWARE_DIR`，指向 firmadyne 根目录
 2. 下载一个固件，例如：Netgear WNAP320 [v2.0.3](http://www.downloads.netgear.com/files/GDC/WNAP320/WNAP320%20Firmware%20Version%202.0.3.zip) 版本
 3. 使用 extractor 获得文件系统，（`-nk` no kernel；`images` 压缩包目录）
    * `./extractor/extractor.py -nk "WNAP320 Firmware Version 2.0.3.zip" images`

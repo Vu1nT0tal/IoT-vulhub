@@ -1,9 +1,27 @@
+# FirmAE 模拟
+
 https://github.com/pr0v3rbs/FirmAE
 
-使用方法与firmadyne相同
+注：添加 `get_device_firmadyne` 函数替换 `add_partition`，修复 loop device 错误。
 
-- 去除PostgreSQL
-- 修改启动脚本
-- 修复在docker中设置loop device报错的问题
+## 构建镜像
 
-详细使用方法请参考 [D-Link CVE-2019-17621](https://github.com/firmianay/IoT-vulhub/tree/master/D-Link/CVE-2019-17621/firmae-emu/readme.md)
+使用方法与 firmadyne 相同，需要先构建 `binwalk:noentry` 镜像（查看 binwalk 目录）。
+
+```sh
+$ docker build firmianay/firmae .
+```
+
+## 使用方法
+
+启动固件模拟：
+
+```sh
+$ sudo ./run.sh --run
+```
+
+启动固件模拟并调试：
+
+```sh
+$ sudo ./run.sh --debug
+```

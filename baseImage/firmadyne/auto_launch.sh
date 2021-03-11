@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # 检查参数
 if [ "$#" -ge 1 ]; then
@@ -18,7 +18,7 @@ if [ ! -f ${1} ]; then
     echo "Input file not found: ${1}"
     exit 1
 fi
-FNAME=$(basename -- "${1}")
+FNAME=$(basename "${1}")
 FNAME="${FNAME%.*}"
 
 # 固件解包
@@ -50,6 +50,7 @@ else
 fi
 
 # 启动模拟
+echo 'Start running...'
 ./scratch/1/run.sh
 
 # 清理中间文件

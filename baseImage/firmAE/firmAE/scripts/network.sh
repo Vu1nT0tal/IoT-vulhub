@@ -4,7 +4,7 @@ BUSYBOX=/firmadyne/busybox
 ACTION=`${BUSYBOX} cat /firmadyne/network_type`
 
 if (${FIRMAE_NETWORK}); then
-  sleep 10
+  ${BUSYBOX} sleep 10
 
   if [ ${ACTION} == "default" ]; then
     ${BUSYBOX} brctl addbr br0
@@ -17,13 +17,13 @@ if (${FIRMAE_NETWORK}); then
 
     # netgear WNR2000 bridge command
     while (true); do
-      sleep 5
+      ${BUSYBOX} sleep 5
       if (${BUSYBOX} brctl show | ${BUSYBOX} grep -sq ${NET_BRIDGE}); then
         break
       fi
     done
 
-    sleep 5
+    ${BUSYBOX} sleep 5
 
     if [ ${ACTION} == "normal" ]; then
       IP=$(${BUSYBOX} ip addr show ${NET_BRIDGE} | ${BUSYBOX} grep -m1 "inet\b" | ${BUSYBOX} awk '{print $2}' | ${BUSYBOX} cut -d/ -f1)
@@ -57,7 +57,7 @@ if (${FIRMAE_NETWORK}); then
     fi
   fi
 
-  sleep 60
+  ${BUSYBOX} sleep 60
 
   # netgear TL-WR841HP_V2_151124
   while (true); do
@@ -66,6 +66,6 @@ if (${FIRMAE_NETWORK}); then
       iptables -F | true
       iptables -P INPUT ACCEPT | true
     fi
-    sleep 5
+    ${BUSYBOX} sleep 5
   done
 fi

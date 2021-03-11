@@ -8,8 +8,9 @@ images=(
     "firmianay/gdbserver"
     "firmianay/qiling"
     "firmianay/binwalk"
-    "firmianay/binwalk:noentry" # 作为 firmadyne 的基础镜像
+    "firmianay/binwalk:noentry" # 作为 firmadyne 和 firmae 的基础镜像
     "firmianay/firmadyne"
+    "firmianay/firmae"
 
     "firmianay/qemu-user-static"
     "firmianay/qemu-system:arm"

@@ -42,5 +42,5 @@ then
 fi
 
 echo "----Mounting----"
-#sudo /bin/mount /dev/nbd0p1 "${IMAGE_DIR}"
+#/bin/mount /dev/nbd0p1 "${IMAGE_DIR}"
 mount "${DEVICE}" "${IMAGE_DIR}"
