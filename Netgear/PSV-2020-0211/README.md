@@ -1,4 +1,4 @@
-# Netgear R8300 upnpd PreAuth RCE 漏洞
+# Netgear R8300 upnpd 远程命令执行漏洞
 
 
 ## 漏洞环境

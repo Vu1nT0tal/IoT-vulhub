@@ -1,4 +1,4 @@
-# Vivotek IP Cameras CC8160 栈溢出漏洞
+# Vivotek CC8160 栈溢出漏洞
 
 
 ## 漏洞环境
