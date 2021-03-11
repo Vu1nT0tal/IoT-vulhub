@@ -73,4 +73,4 @@ docker-compose -f docker-compose-xxxx.yml down -v
 
 ## 开源协议
 
-IoT-vulhub is licensed under the MIT License. See LICENSE for the full license text.
+IoT-vulhub use SATA(Star And Thank Author) License, so you have to star this project before using. Read the license carefully.
