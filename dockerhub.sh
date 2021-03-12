@@ -17,15 +17,22 @@ images=(
     "firmianay/qemu-system:mips"
     "firmianay/qemu-system:mipsel"
 
-    # vivotek
+    # cisco
 
-    # tplink
+    # dlink
 
-    # netgear
+    # huawei
 
     # linksys
 
-    # huawei
+    # netgear
+
+    # tenda
+
+    # tplink
+
+    # vivotek
+
 )
 
 for i in ${images[@]}; do

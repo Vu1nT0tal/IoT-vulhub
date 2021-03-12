@@ -1,7 +1,11 @@
-# Netgear R8300 upnpd 远程命令执行漏洞
-
+# Netgear R8300 upnpd 远程代码执行漏洞
 
 ## 漏洞环境
+
+- docker：攻击、调试主机：192.168.2.1
+- qemu-system：固件主机：192.168.2.2
+- upnpd（有漏洞服务）：192.168.2.2:1900
+- 镜像依赖：`firmianay/ubuntu1604 -> firmianay/qemu-system:armhf`
 
 使用 `firmianay/binwalk` 解压固件：
 
@@ -9,20 +13,27 @@
 $ docker run --rm -v $PWD/firmware/:/root/firmware firmianay/binwalk -Mer "/root/firmware/R8300-V1.0.2.130_1.0.99.chk"
 ```
 
-需要先构建 buildroot 环境，交叉编译得到 `nvram.so`：
+需要先构建 buildroot 环境，交叉编译得到 `nvram.so`，将其复制到 `system-emu/tools`：
 
 ```sh
 $ arm-buildroot-linux-uclibcgnueabi-gcc -Wall -fPIC -shared nvram.c -o nvram.so
 ```
 
 ```sh
-# 将 nvram.so 复制到 system-emu/tools
+# 初始化环境
+$ ./init_env.sh arm
+
+# 构建镜像
 $ docker-compose -f docker-compose-system.yml build
 
-# 启动环境
+# 启动容器
 $ docker-compose -f docker-compose-system.yml up
-# 等待启动完成，重新开启一个窗口做后续操作
+
+# 等待启动完成，重新打开一个窗口
 $ docker exec -it netgear-system /bin/bash
+
+# 漏洞利用
+$ python3 tools/exp.py
 ```
 
 ## 漏洞复现
@@ -216,7 +227,6 @@ def checkExploit():
    try:
        ret = soc.connect(('192.168.2.2', 9999))
        return 1
-
    except:
        return 0
 

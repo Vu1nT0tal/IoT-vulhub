@@ -7,3 +7,5 @@ services:
             context: .
             dockerfile: ./system-emu/Dockerfile
         privileged: true
+        ports:
+            - "1234:22"

@@ -4,8 +4,8 @@ services:
     user-emu:
         container_name: vivotek-user
         build:
-          context: .
-          dockerfile: ./user-emu/Dockerfile
+            context: .
+            dockerfile: ./user-emu/Dockerfile
         privileged: true
         ports:
-          - "8888:80"
+            - "8888:80"

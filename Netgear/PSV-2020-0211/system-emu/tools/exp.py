@@ -169,7 +169,6 @@ def checkExploit():
    try:
        ret = soc.connect(('192.168.2.2', 9999))
        return 1
-
    except:
        return 0
 

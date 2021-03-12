@@ -15,6 +15,8 @@ firmianay/ubuntu1604 -> firmianay/qemu-user-static -> firmianay/vivotek:remote_s
 firmianay/ubuntu1604 -> firmianay/qemu-system:mips -> firmianay/huawei:cve-2017-17215-sys
 
 firmianay/ubuntu1604 -> firmianay/qemu-system:armhf -> firmianay/netgear:psv-2020-0211-sys
+
+firmianay/ubuntu1604 -> firmianay/binwalk:noentry -> firmianay/firmadyne (firmianay/firmae) -> firmianay/dlink:cve-2019-17621
 ```
 
 ## 制作漏洞镜像
@@ -53,12 +55,13 @@ Vivotek/                                    # 固件厂商
 
 ## 编写 docker-compose.yml
 
-目前通常有三种，也可以有其他，只要能用，形式不限：
+目前通常有四种，也可以有其他，只要能用，形式不限：
 
 ```
 docker-compose -f docker-compose-user.yml build         # QEMU 用户模式模拟
 docker-compose -f docker-compose-system.yml build       # QEMU 系统模式模拟
 docker-compose -f docker-compose-firmadyne.yml build    # firmadyne 模拟
+docker-compose -f docker-compose-firmae.yml build       # firmae 模拟（方便调试）
 ...
 ```
 

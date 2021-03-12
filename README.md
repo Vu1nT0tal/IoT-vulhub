@@ -4,64 +4,64 @@
 
 ## 安装
 
-在 ubuntu16.04 下安装 docker/docker-compose：
+在 ubuntu16.04 下安装 docker 和 docker-compose：
 
 ```sh
 # 安装 pip
-curl -s https://bootstrap.pypa.io/get-pip.py | python3
+$ curl -s https://bootstrap.pypa.io/get-pip.py | python3
 
 # 安装最新版 docker
-curl -s https://get.docker.com/ | sh
+$ curl -s https://get.docker.com/ | sh
 
 # 启动 docker 服务
-service docker start
+$ systemctl start docker
 
-# 安装 compose
-pip install docker-compose
+# 安装 docker-compose
+$ python3 -m pip install docker-compose
 ```
 
 ## 使用说明
 
-**在构建 qemu-system 前务必下载对应的 qemu 镜像！**
-
 ```sh
-# 下载项目
-wget https://github.com/firmianay/IoT-vulhub/archive/master.zip -O iot-vulhub-master.zip
-unzip iot-vulhub-master.zip
-cd iot-vulhub-master
+# 下载本项目
+$ wget https://github.com/firmianay/IoT-vulhub/archive/master.zip -O iot-vulhub-master.zip
+$ unzip iot-vulhub-master.zip && cd iot-vulhub-master
 
-# （可选）构建 binwalk 容器，方便使用
-cd baseImage/binwalk
-docker build -t firmianay/binwalk . # 本地编译
-docker pull firmianay/binwalk       # 或者拉取
+# 构建 binwalk 容器，方便使用
+$ cd baseImage/binwalk && docker build -t firmianay/binwalk .
 
-# 进入某一个漏洞/环境的目录
-cd Vivotek/remote_stack_overflow
+# 进入一个漏洞环境目录
+$ cd D-Link/CVE-2019-17621
 
 # 解包固件
-docker run -v $PWD/firmware:/root/firmware binwalk -Mer /root/firmware/firmware.bin
+$ docker run --rm -v $PWD/firmware:/root/firmware firmianay/binwalk -Mer "/root/firmware/firmware.bin"
 
-# 自动化编译环境（目前通常有三种模拟方式）
-docker-compose -f docker-compose-user.yml build     # QEMU 用户模式模拟
-docker-compose -f docker-compose-system.yml build   # QEMU 系统模式模拟
-docker-compose -f docker-compose-firmadyne.yml build   # firmadyne 模拟
+# 初始化环境（arm/mips/mipsel）
+$ ./init_env.sh xxxx
+
+# 自动化编译环境（目前通常有四种模拟方式）
+$ docker-compose -f docker-compose-user.yml build         # QEMU 用户模式模拟
+$ docker-compose -f docker-compose-system.yml build       # QEMU 系统模式模拟
+$ docker-compose -f docker-compose-firmadyne.yml build    # firmadyne 模拟
+$ docker-compose -f docker-compose-firmae.yml build       # firmae 模拟（方便调试）
 
 # 启动整个环境
-docker-compose -f docker-compose-xxxx.yml up
+$ docker-compose -f docker-compose-xxxx.yml up
 
-# 每个环境目录下都有相应的说明文件，请阅读该文件，进行漏洞/环境测试。
+# 每个环境目录下都有相应的说明文件，请阅读该文件，进行漏洞测试
 
-# 测试完成后，删除整个环境：
-docker-compose -f docker-compose-xxxx.yml down -v
+# 测试完成后，删除整个环境
+$ docker-compose -f docker-compose-xxxx.yml down -v
 ```
 
 注意事项：
+- 在构建 qemu-system 前务必下载对应的 qemu 镜像！
 - 退出 qemu 用 `Ctrl+A`，再输入 `X`
 - 容器中使用 systemctl 可能会有问题，使用 `/etc/init.d/xxxx start` 代替
 - 如果要从实体机直接访问 Qemu，例如打开固件的 web 界面（实体机 -> Docker -> Qemu）：
   - 首先在启动 docker 时需要将 ssh 端口映射出来，如 `-p 1234:22`
   - 然后在本地开启端口转发，如 `ssh -D 2345 root@127.0.0.1 -p 1234`
-  - 最后对浏览器设置 socks5 代理 `127.0.0.1:2345`。Burpsuite/Python利用脚本同理。
+  - 最后对浏览器设置 socks5 代理 `127.0.0.1:2345`。Burpsuite/Python脚本同理。
 
 ## 漏洞环境列表
 
@@ -73,4 +73,4 @@ docker-compose -f docker-compose-xxxx.yml down -v
 
 ## 开源协议
 
-IoT-vulhub use SATA(Star And Thank Author) License, so you have to star this project before using. Read the license carefully.
+IoT-vulhub use SATA(Star And Thank Author) [License](./LICENSE), so you have to star this project before using. 🙏
