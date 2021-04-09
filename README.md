@@ -4,7 +4,7 @@
 
 ## 安装
 
-在 ubuntu16.04 下安装 docker 和 docker-compose：
+在 Ubuntu 20.04 下安装 docker 和 docker-compose：
 
 ```sh
 # 安装 pip
@@ -26,6 +26,9 @@ $ python3 -m pip install docker-compose
 # 下载本项目
 $ wget https://github.com/firmianay/IoT-vulhub/archive/master.zip -O iot-vulhub-master.zip
 $ unzip iot-vulhub-master.zip && cd iot-vulhub-master
+
+# 构建 ubuntu1604 基础镜像
+$ cd baseImage/ubuntu1604 && docker build -t firmianay/ubuntu1604 .
 
 # 构建 binwalk 容器，方便使用
 $ cd baseImage/binwalk && docker build -t firmianay/binwalk .
@@ -69,7 +72,7 @@ $ docker-compose -f docker-compose-xxxx.yml down -v
 
 ## 贡献指南
 
-在研究漏洞的同时，也请给我们提交一份复现环境吧！[贡献指南](./CONTRIBUTION.md)。
+在研究漏洞的同时，也请给我们提交一份复现环境吧！[贡献指南](./CONTRIBUTING.md)。
 
 ## 开源协议
 

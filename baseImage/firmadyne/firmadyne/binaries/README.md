@@ -26,7 +26,7 @@ wget -O ./binaries/vmlinux.mipsel https://github.com/firmadyne/kernel-v2.6/relea
 wget -O ./binaries/vmlinux.mipseb https://github.com/firmadyne/kernel-v2.6/releases/download/v1.1/vmlinux.mipseb
 
 echo "Downloading kernel 4.1 (ARM)..."
-wget -O ./binaries/zImage.armel https://github.com/firmadyne/kernel-v4.1/releases/download/v1.0/zImage.armel
+wget -O ./binaries/zImage.armel https://github.com/firmadyne/kernel-v4.1/releases/download/v1.1/zImage.armel
 
 echo "Downloading console..."
 wget -O ./binaries/console.armel https://github.com/firmadyne/console/releases/download/v1.0/console.armel
