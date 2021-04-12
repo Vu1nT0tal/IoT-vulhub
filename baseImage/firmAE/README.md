@@ -9,7 +9,7 @@ https://github.com/pr0v3rbs/FirmAE
 使用方法与 firmadyne 相同，需要先构建 `binwalk:noentry` 镜像（查看 binwalk 目录）。
 
 ```sh
-$ docker build firmianay/firmae .
+$ docker build -t firmianay/firmae .
 ```
 
 ## 使用方法
