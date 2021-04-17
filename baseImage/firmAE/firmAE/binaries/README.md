@@ -21,6 +21,7 @@ download https://github.com/pr0v3rbs/FirmAE_kernel-v4.1/releases/download/v1.0/v
 
 echo "Downloading kernel 4.1 (ARM)..."
 download https://github.com/pr0v3rbs/FirmAE_kernel-v4.1/releases/download/v1.0/zImage.armel
+download https://github.com/pr0v3rbs/FirmAE_kernel-v4.1/releases/download/v1.0/vmlinux.armel
 
 echo "Downloading busybox..."
 download https://github.com/pr0v3rbs/FirmAE/releases/download/v1.0/busybox.armel

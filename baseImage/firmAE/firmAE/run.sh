@@ -107,6 +107,7 @@ function run_emulation()
         fi
     elif [ ${OPTION} = "run" ]; then
         # 运行模式
+        check_network ${IP} false &
         ${WORK_DIR}/run.sh
     fi
 }
