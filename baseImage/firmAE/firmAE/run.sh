@@ -16,6 +16,8 @@ function get_option()
         echo "run"
     elif [ ${OPTION} = "-d" ] || [ ${OPTION} = "--debug" ]; then
         echo "debug"
+    elif [ ${OPTION} = "-b" ] || [ ${OPTION} = "--boot" ]; then
+        echo "boot"
     fi
 }
 OPTION=`get_option ${1}`
@@ -70,10 +72,9 @@ function run_emulation()
         FIRMAE_NETWORK=${FIRMAE_NETWORK}
         export FIRMAE_NETWORK
         ./scripts/makeNetwork.py -i $IID -q -o -a ${ARCH}
-        if [ ! -e ${WORK_DIR}/run_debug.sh ]; then
-            ln -s ./run.sh ${WORK_DIR}/run_debug.sh
-            ln -s ./run.sh ${WORK_DIR}/run_analyze.sh
-        fi
+        ln -s ./run.sh ${WORK_DIR}/run_debug.sh | true
+        ln -s ./run.sh ${WORK_DIR}/run_analyze.sh | true
+        ln -s ./run.sh ${WORK_DIR}/run_boot.sh | true
         echo "[*] infer network done!!!"
     else
         echo "[*] ${FILE} already succeed emulation!!!"
@@ -109,6 +110,9 @@ function run_emulation()
         # 运行模式
         check_network ${IP} false &
         ${WORK_DIR}/run.sh
+    elif [ ${OPTION} = "boot" ]; then
+        # boot调试模式
+        ${WORK_DIR}/run_boot.sh
     fi
 }
 

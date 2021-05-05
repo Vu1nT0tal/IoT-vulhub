@@ -48,6 +48,12 @@ else
     QEMU_DEBUG="user_debug=0 firmadyne.syscall=1"
 fi
 
+if (echo ${RUN_MODE} | grep -q "boot"); then
+    QEMU_BOOT="-s -S"
+else
+    QEMU_BOOT=""
+fi
+
 QEMU=`get_qemu ${ARCHEND}`
 QEMU_MACHINE=`get_qemu_machine ${ARCHEND}`
 QEMU_ROOTFS=`get_qemu_disk ${ARCHEND}`
@@ -77,7 +83,7 @@ del_partition ${DEVICE:0:$((${#DEVICE}-2))}
 
 echo "Starting firmware emulation..."
 
-%(QEMU_ENV_VARS)s ${QEMU} -m 1024 -M ${QEMU_MACHINE} -kernel ${KERNEL} \\
+%(QEMU_ENV_VARS)s ${QEMU} ${QEMU_BOOT} -m 1024 -M ${QEMU_MACHINE} -kernel ${KERNEL} \\
     %(QEMU_DISK)s -append "root=${QEMU_ROOTFS} console=ttyS0 nandsim.parts=64,64,64,64,64,64,64,64,64,64 %(QEMU_INIT)s rw debug print-fatal-signals=1 FIRMAE_NETWORK=${FIRMAE_NETWORK} FIRMAE_NVRAM=${FIRMAE_NVRAM} FIRMAE_KERNEL=${FIRMAE_KERNEL} FIRMAE_ETC=${FIRMAE_ETC} ${QEMU_DEBUG}" \\
     -serial file:${WORK_DIR}/qemu.final.serial.log \\
     -serial unix:/tmp/qemu.${IID}.S1,server,nowait \\
