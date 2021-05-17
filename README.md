@@ -58,6 +58,7 @@ $ docker-compose -f docker-compose-xxxx.yml down -v
 ```
 
 注意事项：
+
 - 在构建 qemu-system 前务必下载对应的 qemu 镜像！
 - 退出 qemu 用 `Ctrl+A`，再输入 `X`
 - 容器中使用 systemctl 可能会有问题，使用 `/etc/init.d/xxxx start` 代替

@@ -1,5 +1,4 @@
-Introduction
-============
+# Introduction
 
 This is a small binary that spawns a console on the `/dev/firmadyne` special
 character device at system startup. In conjunction with a patched filesystem
@@ -7,8 +6,7 @@ and instrumented kernel, this allows an analyst to interact with an emulated
 firmware image through QEMU, since some firmware images do not spawn a terminal
 on the primary serial console.
 
-Usage
-=====
+## Usage
 
 First, create the special character device within the firmware image:
 

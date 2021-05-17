@@ -1,5 +1,4 @@
-Introduction
-============
+# Introduction
 
 This is a library that emulates the behavior of the NVRAM peripheral, by
 storing key-value pairs into a `tmpfs` mounted at `MOUNT_POINT` (default:
@@ -33,8 +32,7 @@ features such as thread-local storage. Additionally, many C runtime libraries
 are not built with position-independent code (PIC) to support static
 compilation.
 
-Usage
-=====
+## Usage
 
 Build the library, and copy it into the firmware image:
 
@@ -48,8 +46,7 @@ Create the NVRAM storage directories on the filesystem:
 This will be automatically loaded by the instrumented kernel through
 `LD_PRELOAD` by modifications to `init/main.c`.
 
-Notes
-=====
+## Notes
 
 This library is alpha quality. In particular, memory safety of string
 operations has not been checked, there may be concurrency bugs, and it uses

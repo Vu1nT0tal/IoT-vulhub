@@ -1,6 +1,6 @@
 # FirmAE 模拟
 
-https://github.com/pr0v3rbs/FirmAE
+<https://github.com/pr0v3rbs/FirmAE>
 
 注：添加 `get_device_firmadyne` 函数替换 `add_partition`，修复 loop device 错误。
 
@@ -20,8 +20,14 @@ $ docker build -t firmianay/firmae .
 $ sudo ./run.sh --run
 ```
 
-启动固件模拟并调试：
+启动固件模拟并用户层调试：
 
 ```sh
 $ sudo ./run.sh --debug
+```
+
+启动固件模拟并内核层 boot 调试：
+
+```sh
+$ sudo ./run.sh --boot
 ```

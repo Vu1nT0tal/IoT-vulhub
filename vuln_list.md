@@ -34,9 +34,6 @@
 
 - *EXP* | [Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）](https://github.com/firmianay/IoT-vulhub/tree/master/Cisco/CVE-2020-3331)
 
-## Linksys
-
-
 ## TODO list
 
 - CVE-2020-10987：https://nosec.org/home/detail/4634.html https://blog.securityevaluators.com/tenda-ac1900-vulnerabilities-discovered-and-exploited-e8e26aa0bc68

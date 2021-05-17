@@ -1,18 +1,17 @@
 # firmadyne 所需文件
 
 - console
-   - `console.armel`
-   - `console.mipseb`
-   - `console.mipsel`
+  - `console.armel`
+  - `console.mipseb`
+  - `console.mipsel`
 - libnvram
-   - `libnvram.so.armel`
-   - `libnvram.so.mipseb`
-   - `libnvram.so.mipsel`
+  - `libnvram.so.armel`
+  - `libnvram.so.mipseb`
+  - `libnvram.so.mipsel`
 - kernel
-   - `zImage.armel`
-   - `vmlinux.mipseb`
-   - `vmlinux.mipsel`
-
+  - `zImage.armel`
+  - `vmlinux.mipseb`
+  - `vmlinux.mipsel`
 
 ```sh
 #!/bin/sh

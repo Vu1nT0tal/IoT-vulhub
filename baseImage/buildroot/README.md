@@ -25,7 +25,7 @@ $ arm-buildroot-linux-uclibcgnueabi-gcc -Wall -fPIC -shared nvram.c -o nvram.so
 
 ## 或者下载直接使用
 
-https://toolchains.bootlin.com/
+<https://toolchains.bootlin.com>
 
 ```sh
 # armv5-eabi uclibc
@@ -38,4 +38,4 @@ $ wget https://toolchains.bootlin.com/downloads/releases/toolchains/mips32/tarba
 $ wget https://toolchains.bootlin.com/downloads/releases/toolchains/mips32el/tarballs/mips32el--uclibc--stable-2020.08-1.tar.bz2
 ```
 
-或者：https://www.uclibc.org/downloads/binaries/0.9.30.1/
+或者：<https://www.uclibc.org/downloads/binaries/0.9.30.1>

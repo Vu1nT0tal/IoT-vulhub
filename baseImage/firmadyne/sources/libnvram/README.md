@@ -1,4 +1,4 @@
-## libnvram
+# libnvram
 
 This is a library that emulates the behavior of the NVRAM peripheral, by storing key-value pairs into a `tmpfs` mounted at `MOUNT_POINT` (default: `/firmadyne/libnvram`).
 

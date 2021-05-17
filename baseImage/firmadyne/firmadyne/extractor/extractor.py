@@ -467,7 +467,8 @@ class ExtractionItem(object):
         """
 
         if not self.get_rootfs_status():
-            for module in binwalk.scan(self.item, "-e", "-r", "-y", "filesystem", signature=True, quiet=True):
+            # work-around issue with binwalk signature definitions for ubi
+            for module in binwalk.scan(self.item, "-e", "-r", "-y", "filesystem", "-y", "ubi", signature=True, quiet=True):
                 for entry in module.results:
                     self.printf(">>>> %s" % entry.description)
                     break

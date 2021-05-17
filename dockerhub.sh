@@ -23,8 +23,6 @@ images=(
 
     # huawei
 
-    # linksys
-
     # netgear
 
     # tenda

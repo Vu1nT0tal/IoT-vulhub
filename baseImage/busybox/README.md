@@ -1,6 +1,6 @@
 # 编译静态链接的 busybox
 
-官网：https://busybox.net/
+官网：<https://busybox.net>
 
 ```sh
 # 下载指定版本的二进制文件

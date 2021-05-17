@@ -112,6 +112,9 @@ function run_emulation()
         ${WORK_DIR}/run.sh
     elif [ ${OPTION} = "boot" ]; then
         # boot调试模式
+        BOOT_KERNEL_PATH=`get_boot_kernel ${ARCH} true`
+        BOOT_KERNEL=./binaries/`basename ${BOOT_KERNEL_PATH}`
+        echo -e "[\033[32m+\033[0m] Connect with gdb-multiarch -q ${BOOT_KERNEL} -ex='target remote:1234'"
         ${WORK_DIR}/run_boot.sh
     fi
 }
