@@ -1,0 +1,18 @@
+--- /tmp/aarch64-linux-musl-cross/aarch64-linux-musl/include/asm/sigcontext.h
++++ /aarch64-linux-musl-cross/aarch64-linux-musl/include/asm/sigcontext.h
+@@ -25,6 +25,7 @@
+  * Signal context structure - contains all info to do with the state
+  * before the signal handler was invoked.
+  */
++#if false
+ struct sigcontext {
+ 	__u64 fault_address;
+ 	/* AArch64 registers */
+@@ -127,6 +128,7 @@
+ 	__u16 vl;
+ 	__u16 __reserved[3];
+ };
++#endif
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
