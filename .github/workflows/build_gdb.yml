@@ -18,16 +18,16 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash .github/build/install_deps.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/.github/build/install_compiler.sh x86_64
+        run: .github/build/install_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: $GITHUB_WORKSPACE/.github/build/install_compiler.sh i686
+        run: .github/build/install_compiler.sh i686
 
       - name: Build gdb
         id: build_gdb
         run: |
           export PATH="$PATH:/i686-linux-musl-cross/bin"
-          $GITHUB_WORKSPACE/.github/build/targets/build_gdb.sh x86
+          .github/build/targets/build_gdb.sh x86
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -47,12 +47,12 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash .github/build/install_deps.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/.github/build/install_compiler.sh x86_64
+        run: .github/build/install_compiler.sh x86_64
 
       - name: Build gdb
         id: build_gdb
         run: |
-          $GITHUB_WORKSPACE/.github/build/targets/build_gdb.sh x86_64
+          .github/build/targets/build_gdb.sh x86_64
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -72,16 +72,16 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash .github/build/install_deps.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/.github/build/install_compiler.sh x86_64
+        run: .github/build/install_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: $GITHUB_WORKSPACE/.github/build/install_compiler.sh arm
+        run: .github/build/install_compiler.sh arm
 
       - name: Build gdb
         id: build_gdb
         run: |
           export PATH="$PATH:/arm-linux-musleabihf-cross/bin"
-          $GITHUB_WORKSPACE/.github/build/targets/build_gdb.sh armhf
+          .github/build/targets/build_gdb.sh armhf
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -101,19 +101,19 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash .github/build/install_deps.sh
 
       - name: Install build compiler
-        run: $GITHUB_WORKSPACE/.github/build/install_compiler.sh x86_64
+        run: .github/build/install_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: $GITHUB_WORKSPACE/.github/build/install_compiler.sh aarch64
+        run: .github/build/install_compiler.sh aarch64
 
       - name: Patch headers
         run: |
-          patch /aarch64-linux-musl-cross/aarch64-linux-musl/include/asm/sigcontext.h < $GITHUB_WORKSPACE/.github/patches/gdb/gdb-aarch64-header-sigcontext-fix.patch
+          patch /aarch64-linux-musl-cross/aarch64-linux-musl/include/asm/sigcontext.h < .github/patches/gdb/gdb-aarch64-header-sigcontext-fix.patch
       - name: Build gdb
         id: build_gdb
         run: |
           export PATH="$PATH:/aarch64-linux-musl-cross/bin"
-          $GITHUB_WORKSPACE/.github/build/targets/build_gdb.sh aarch64
+          .github/build/targets/build_gdb.sh aarch64
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
