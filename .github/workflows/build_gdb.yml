@@ -27,7 +27,10 @@ jobs:
         id: build_gdb
         run: |
           export PATH="$PATH:/i686-linux-musl-cross/bin"
-          sudo bash .github/targets/build_gdb.sh x86
+          env
+          ls .github
+          ls .github/targets
+          .github/targets/build_gdb.sh x86
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -47,7 +50,7 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash .github/build/install_deps.sh
 
       - name: Install build compiler
-        run: sudo bash .github/build/install_compiler.sh x86_64
+        run: .github/build/install_compiler.sh x86_64
 
       - name: Build gdb
         id: build_gdb
@@ -72,7 +75,7 @@ jobs:
         run: sudo apk update && sudo apk add bash && sudo bash .github/build/install_deps.sh
 
       - name: Install build compiler
-        run: sudo bash .github/build/install_compiler.sh x86_64
+        run: sudo .github/build/install_compiler.sh x86_64
 
       - name: Install dependencies workaround
         run: sudo bash .github/build/install_compiler.sh arm
