@@ -27,7 +27,7 @@ jobs:
         id: build_gdb
         run: |
           export PATH="$PATH:/i686-linux-musl-cross/bin"
-          sudo bash .github/build/targets/build_gdb.sh x86
+          sudo bash .github/targets/build_gdb.sh x86
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -52,7 +52,7 @@ jobs:
       - name: Build gdb
         id: build_gdb
         run: |
-          sudo bash .github/build/targets/build_gdb.sh x86_64
+          sudo bash .github/targets/build_gdb.sh x86_64
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -81,7 +81,7 @@ jobs:
         id: build_gdb
         run: |
           export PATH="$PATH:/arm-linux-musleabihf-cross/bin"
-          sudo bash .github/build/targets/build_gdb.sh armhf
+          sudo bash .github/targets/build_gdb.sh armhf
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -98,13 +98,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: sudo apk update && sudo apk add bash && sudo .github/build/install_deps.sh
+        run: sudo apk update && sudo apk add bash && sudo bash .github/build/install_deps.sh
 
       - name: Install build compiler
-        run: sudo .github/build/install_compiler.sh x86_64
+        run: sudo bash .github/build/install_compiler.sh x86_64
 
       - name: Install dependencies workaround
-        run: sudo .github/build/install_compiler.sh aarch64
+        run: sudo bash .github/build/install_compiler.sh aarch64
 
       - name: Patch headers
         run: |
@@ -113,7 +113,7 @@ jobs:
         id: build_gdb
         run: |
           export PATH="$PATH:/aarch64-linux-musl-cross/bin"
-          sudo .github/build/targets/build_gdb.sh aarch64
+          sudo bash .github/targets/build_gdb.sh aarch64
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
