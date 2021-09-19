@@ -119,6 +119,9 @@ chmod a+x "${IMAGE_DIR}/firmadyne/run_service.sh"
 cp "${SCRIPT_DIR}/injectionChecker.sh" "${IMAGE_DIR}/bin/a"
 chmod a+x "${IMAGE_DIR}/bin/a"
 
+touch "${IMAGE_DIR}/firmadyne/debug.sh"
+chmod a+x "${IMAGE_DIR}/firmadyne/debug.sh"
+
 if (! ${FIRMAE_ETC}); then
     sed -i 's/sleep 60/sleep 15/g' "${IMAGE_DIR}/firmadyne/network.sh"
     sed -i 's/sleep 120/sleep 30/g' "${IMAGE_DIR}/firmadyne/run_service.sh"
