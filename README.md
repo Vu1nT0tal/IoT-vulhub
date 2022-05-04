@@ -75,10 +75,8 @@ $ docker-compose -f docker-compose-xxxx.yml down -v
 
 在研究漏洞的同时，也请给我们提交一份复现环境吧！[贡献指南](./CONTRIBUTING.md)。
 
-## 开源协议
+## LICENSE
 
-IoT-vulhub use SATA(Star And Thank Author) [License](./LICENSE), so you have to star this project before using. 🙏
+[GNU General Public License v3.0](./LICENSE)
 
-## Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/firmianay/IoT-vulhub.svg)](https://starchart.cc/firmianay/IoT-vulhub)
+[![Stargazers over time](https://starchart.cc/VulnTotal-Team/IoT-vulhub.svg)](https://starchart.cc/VulnTotal-Team/IoT-vulhub)
