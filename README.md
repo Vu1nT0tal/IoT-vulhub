@@ -2,6 +2,13 @@
 
 受 [Vulhub](https://github.com/vulhub/vulhub) 项目的启发，希望做一个 IoT 版的固件漏洞复现环境。
 
+- [IoT-vulhub](#iot-vulhub)
+  - [安装](#安装)
+  - [使用说明](#使用说明)
+  - [漏洞环境列表](#漏洞环境列表)
+  - [贡献指南](#贡献指南)
+  - [关注我们](#关注我们)
+
 ## 安装
 
 在 Ubuntu 20.04 下安装 docker 和 docker-compose：
@@ -75,8 +82,10 @@ $ docker-compose -f docker-compose-xxxx.yml down -v
 
 在研究漏洞的同时，也请给我们提交一份复现环境吧！[贡献指南](./CONTRIBUTING.md)。
 
-## LICENSE
+## 关注我们
 
-[GNU General Public License v3.0](./LICENSE)
+[VulnTotal安全团队](https://github.com/VulnTotal-Team)成立于2022年。致力于分享高质量原创文章和开源工具，包括Web安全、移动安全、物联网/汽车安全、代码审计、网络攻防等，欢迎[关注或加入我们](https://github.com/VulnTotal-Team/.github/blob/main/README.md)！
+
+GNU General Public License v3.0
 
 [![Stargazers over time](https://starchart.cc/VulnTotal-Team/IoT-vulhub.svg)](https://starchart.cc/VulnTotal-Team/IoT-vulhub)
