@@ -33,7 +33,7 @@ $ docker-compose -f docker-compose-system.yml up
 $ docker exec -it netgear-system /bin/bash
 
 # 漏洞利用
-$ python3 tools/exp.py
+$ python tools/exp.py
 ```
 
 ## 漏洞复现
