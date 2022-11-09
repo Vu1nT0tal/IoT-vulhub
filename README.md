@@ -31,7 +31,7 @@ $ python3 -m pip install docker-compose
 
 ```sh
 # 下载本项目
-$ wget https://github.com/firmianay/IoT-vulhub/archive/master.zip -O iot-vulhub-master.zip
+$ wget https://github.com/VulnTotal-Team/IoT-vulhub/archive/master.zip -O iot-vulhub-master.zip
 $ unzip iot-vulhub-master.zip && cd iot-vulhub-master
 
 # 构建 ubuntu1604 基础镜像
